@@ -1,0 +1,71 @@
+.login-parent {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-link {
+  width: 100px;
+  margin-top: 10px;
+}
+
+.login-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  background-color: #5C6D9A;
+  max-height: 8vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  align-self: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1;
+  color: white;
+}
+
+nav > ul {
+  display: flex;
+  justify-content: space-around;
+  width: 40%;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-link {
+  color: white;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#nav-button {
+  padding: 0 15px 0 15px;
+}
+
+.aligned {
+  position: absolute;
+  top: 60px;
+  z-index: 0;
+}
+
+#registration-status, 
+#login-status,
+#create-team-status,
+#team-login-status {
+  color: #860b0b;
+  margin: 0px;
+}
