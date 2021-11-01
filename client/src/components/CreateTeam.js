@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { checkPassword } from '../helpers';
-import { useHistory } from 'react-router-dom';
-import { mapCredentials } from '../redux/mapToProps';
+import { checkPassword, updateUser } from '../helpers';
+import { mapCredentials, mapDispatch } from '../redux/mapToProps';
 import { connect } from 'react-redux';
 import { store } from '../redux/store';
 import axios from 'axios';
@@ -12,14 +11,14 @@ const CreateTeamComponent = props => {
     let history = useHistory();
 
     useEffect(() => {
-        
-        if (!props.userInfo.username) {
 
-            history.push('/login');
+        if (props.userInfo.teamUsername) {
+
+            history.push('/');
 
         }
 
-    }, [history, props]);
+    }, [props, history]);
 
     const [teamName, setTeamName] = useState('');
     const [username, setUsername] = useState('');
@@ -53,27 +52,45 @@ const CreateTeamComponent = props => {
         alert.innerHTML = 'Loading...';
 
         axios.post('http://localhost:5000/create-team', {
+
             teamName: teamName,
             username: username,
-            password: password
+            password: password,
+            members: [
+
+                {
+                    username: props.userInfo.username,
+                    role: 'admin',
+                    firstName: props.userInfo.firstName,
+                    lastName: props.userInfo.lastName
+                }
+
+            ]
+
         })
         .then(res => {
 
             switch(res.data) {
 
                 case 'Unknown':
+
                     alert.innerHTML = 'An unexpected error has occured';
                     break;
 
                 case 'Duplicate':
-                    alert.innerHTML = 'An account with this email address already exists';
+
+                    alert.innerHTML = 'A team with this ID already exists';
                     break;
 
+
                 default:
+
                     alert.innerHTML = '';
-                    store.dispatch({ type: 'USER LOGIN', username: username });
-                    break;
-                    //Give the user access to the rest of the site and their account
+                    props.teamInfoUpdate(res.data);
+                    props.teamLogIn(res.data.username);
+                    updateUser('teamUsername', res.data.username, props.userInfo.username);
+                    history.push('/');
+
             }
         })
         .catch(() => {
@@ -135,6 +152,6 @@ const CreateTeamComponent = props => {
 
 };
 
-const CreateTeam = connect(mapCredentials)(CreateTeamComponent);
+const CreateTeam = connect(mapCredentials, mapDispatch)(CreateTeamComponent);
 
 export { CreateTeam };

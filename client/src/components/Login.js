@@ -9,12 +9,12 @@ const LoginComponent = props => {
     let history = useHistory();
 
     useEffect(() => {
-        
+
         if (props.userInfo.username) {
 
-            history.push('/');
+            history.push('/team-login');
 
-        } 
+        }
 
     }, [history, props]);
     

@@ -10,18 +10,14 @@ const TeamLoginComponent = props => {
     let history = useHistory();
 
     useEffect(() => {
-        
-        if (!props.userInfo.username) {
 
-            history.push('/login');
+        if (props.userInfo.teamUsername) {
 
-        } else if (props.userInfo.teamUsername) {
-
-            history.push('/')
+            history.push('/');
 
         }
 
-    }, [history, props]);
+    }, [props, history]);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -36,17 +32,22 @@ const TeamLoginComponent = props => {
 
         axios.post('http://localhost:5000/team-login', {
 
-            username: username,
-            password: password
+            teamUsername: username,
+            password: password,
+            username: props.userInfo.username,
+            firstName: props.userInfo.firstName,
+            lastName: props.userInfo.lastName
 
         }).then(res => {
 
-            if (res.message === undefined) {
+            if (res.data.message === undefined) {
 
-                axios.put('http://localhost:5000/update-user', { 
+                props.teamInfoUpdate(res.data);
+
+                axios.put('http://localhost:5000/update-user', {
 
                     key: 'teamUsername',
-                    updateValue: res.data.username,
+                    updateValue: username,
                     username: props.userInfo.username
 
                 }).then(res => {
@@ -58,6 +59,7 @@ const TeamLoginComponent = props => {
                     } else {
 
                         props.teamLogIn(res.data.teamUsername);
+
                         history.push('/');
 
                     }
@@ -67,6 +69,10 @@ const TeamLoginComponent = props => {
                     alert.innerHTML = 'An unexpected error has occured';
 
                 });
+
+            } else {
+
+                alert.innerHTML = res.data.message;
 
             }
 

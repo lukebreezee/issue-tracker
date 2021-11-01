@@ -1,11 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { checkPassword, checkEmail } from '../helpers.js';
+import { connect } from 'react-redux';
+import { mapDispatch, mapCredentials } from '../redux/mapToProps';
 import axios from 'axios';
 
-const Create = () => {
+const CreateComponent = props => {
 
     let history = useHistory();
+
+    useEffect(() => {
+
+        if (props.userInfo.username) {
+
+            history.push('/team-login');
+
+        }
+
+    }, [props, history]);
 
     const [accountInfo, setAccountInfo] = useState({
         firstName: '',
@@ -60,6 +72,7 @@ const Create = () => {
                     default:
 
                         alert.innerHTML = '';
+                        props.userLogIn(res.data);
                         history.push('/');
                         //Give the user access to the rest of the site and their account
 
@@ -144,5 +157,7 @@ const Create = () => {
     );
 
 }
+
+const Create = connect(mapCredentials, mapDispatch)(CreateComponent);
 
 export { Create };

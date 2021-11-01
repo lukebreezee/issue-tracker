@@ -1,52 +1,113 @@
-import React from 'react';
-
-//Import all components for react router
-import { Login } from './components/Login.js';
-import { Navbar } from './components/Navbar.js';
-import { Dashboard } from './components/Dashboard.js';
-import { Tickets } from './components/Tickets.js';
-import { Projects } from './components/Projects.js';
-import { Users } from './components/Users.js';
-import { Notifs } from './components/Notifs.js';
-import { Account } from './components/Account.js';
-import { Create } from './components/Create.js';
+import { Login } from './components/Login';
+import { Navbar } from './components/Navbar';
+import { Dashboard } from './components/Dashboard';
+import { Tickets } from './components/Tickets/Tickets';
+import { Projects } from './components/Projects/Projects';
+import { Members } from './components/Members/Members';
+import { Notifs } from './components/Notifs';
+import { Account } from './components/Account';
+import { Create } from './components/Create';
 import { TeamLogin } from './components/TeamLogin';
 import { CreateTeam } from './components/CreateTeam';
+import { MembersAdmin } from './components/Members/MembersAdmin';
+import { MembersPmDev } from './components/Members/MembersPmDev';
+import { TicketsAdminPm } from './components/Tickets/TicketsAdminPm';
+import { TicketsDev } from './components/Tickets/TicketsDev';
+import { ProjectsAdminPm } from './components/Projects/ProjectsAdminPm';
+import { ProjectsDev } from './components/Projects/ProjectsDev';
 
-//React router components
-import { Switch, Route } from 'react-router-dom';
+import { mapCredentials } from './redux/mapToProps.js';
 
-//Main app parent component utilizing the react router library
-class App extends React.Component {
+import { getTeamInfo } from './helpers';
 
-  render() {
-    return (
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 
-      <div id="app">
+import { connect } from 'react-redux';
+
+import { useEffect } from 'react';
+
+const AppComponent = props => {
+
+  let location = useLocation();
+
+  let history = useHistory();
+
+  useEffect(() => {
+
+    console.log(props.teamInfo);
+        
+    if (!props.userInfo.username
+      && location.pathname !== '/create'
+    ) {
+  
+      history.push('/login');
+  
+    } else if (!props.userInfo.teamUsername
+        && location.pathname !== '/create-team'
+        && location.pathname !== '/create'
+      ) {
+  
+          history.push('/team-login');
+  
+    }
+
+}, [history, location.pathname, props]);
+
+useEffect(() => {
+
+    getTeamInfo();
+
+}, [location.pathname]);
+
+
+  return (
+
+    <div id="app">
 
         <Navbar />
 
           <Switch>
 
             <Route path="/" component={Dashboard} exact />
+
             <Route path="/create" component={Create} />
+
             <Route path="/login" component={Login} />
+
             <Route path="/tickets" component={Tickets} />
-            <Route path="/users" component={Users} />
+
+            <Route path="/members" component={Members} />
+
             <Route path="/projects" component={Projects} />
+
             <Route path="/notifs" component={Notifs} />
+
             <Route path="/account" component={Account} />
+
             <Route path="/team-login" component={TeamLogin} />
+
             <Route path="/create-team" component={CreateTeam} />
+
+            <Route path="/members-admin" component={MembersAdmin} />
+
+            <Route path="/members-pm-dev" component={MembersPmDev} />
+
+            <Route path="/tickets-admin-pm" component={TicketsAdminPm} />
+
+            <Route path="/tickets-dev" component={TicketsDev} />
+
+            <Route path="/projects-admin-pm" component={ProjectsAdminPm} />
+
+            <Route path="/projects-dev" component={ProjectsDev} />
 
           </Switch>
 
-      </div>
+      </div>    
 
-    );
-
-  }
-
+  );
+  
 }
+
+const App = connect(mapCredentials)(AppComponent);
 
 export default App;

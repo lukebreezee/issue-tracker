@@ -38,7 +38,18 @@ const rootReducer = (state = initialState, action) => {
 
         case 'TEAM LOGIN':
 
-            tmp.teamInfo.username = action.username;
+            tmp.userInfo.teamUsername = action.username;
+            break;
+
+        case 'TEAM INFO UPDATE':
+
+            tmp.teamInfo = action.teamObj;
+            break;
+
+        case 'TEAM LOGOUT':
+
+            tmp.teamInfo = {};
+            tmp.userInfo.teamUsername = null;
             break;
 
         default:

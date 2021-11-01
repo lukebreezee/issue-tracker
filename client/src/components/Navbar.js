@@ -1,6 +1,7 @@
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapDispatch } from '../redux/mapToProps';
+import { mapCredentials, mapDispatch } from '../redux/mapToProps';
+import axios from 'axios';
 
 const NavbarComponent = props => {
 
@@ -13,6 +14,27 @@ const NavbarComponent = props => {
         history.push('/login');
 
     };
+
+    const handleTeamLogOut = () => {
+
+        axios.post('http://localhost:5000/delete-member', {
+
+            teamUsername: props.userInfo.teamUsername,
+            username: props.userInfo.username
+
+        });
+
+        axios.put('http://localhost:5000/update-user', {
+
+            username: props.userInfo.username,
+            key: 'teamUsername',
+            updateValue: null
+
+        });
+
+        props.teamLogOut();
+
+    }
         
     return (
 
@@ -32,9 +54,9 @@ const NavbarComponent = props => {
 
                 </Link>
 
-                <Link to="/users" >
+                <Link to="/members" >
 
-                    <li className="nav-link">Users</li>
+                    <li className="nav-link">Members</li>
 
                 </Link>
 
@@ -70,6 +92,8 @@ const NavbarComponent = props => {
 
                 <button onClick={() => handleLogOut()}>Log Out</button>
 
+                <button onClick={() => handleTeamLogOut()}>Leave Team</button>
+
             </ul>
 
         </nav>
@@ -77,6 +101,6 @@ const NavbarComponent = props => {
     );
 }
 
-const Navbar = connect(null, mapDispatch)(NavbarComponent);
+const Navbar = connect(mapCredentials, mapDispatch)(NavbarComponent);
 
 export { Navbar };

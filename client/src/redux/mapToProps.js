@@ -29,6 +29,18 @@ const mapDispatch = dispatch => {
 
             dispatch({ type: 'TEAM LOGIN', username });
 
+        },
+
+        teamLogOut: () => {
+
+            dispatch({ type: 'TEAM LOGOUT' });
+
+        },
+
+        teamInfoUpdate: teamObj => {
+
+            dispatch({type: 'TEAM INFO UPDATE', teamObj});
+
         }
 
     };
