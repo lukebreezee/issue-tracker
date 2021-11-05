@@ -1,11 +1,14 @@
 import { connect } from 'react-redux';
-import { mapCredentials } from '../../redux/mapToProps';
+import { useHistory } from 'react-router-dom';
+import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 
 const MyProjectsComponent = props => {
 
+    let history = useHistory();
+
     const userProjects = props.teamInfo.projects.filter(obj => {
 
-        const members = [...obj.members];
+        const members = [...obj.selectedMembers];
 
         if (members.indexOf(props.userInfo.username) !== -1) {
 
@@ -13,9 +16,21 @@ const MyProjectsComponent = props => {
 
         }
 
+        if (obj.creator === props.userInfo.username) return true;
+
         return false;
 
     });
+
+    const handleClick = projectName => {
+
+        console.log(projectName);
+
+        props.currentProjectUpdate(projectName);
+
+        history.push('/view-project')
+
+    };
     
     return (
 
@@ -27,13 +42,18 @@ const MyProjectsComponent = props => {
             
                 {
 
-                    userProjects.map(obj => {           
+                    userProjects.map((obj, index) => {           
 
                         return (
 
-                            <div>
+                            <div
 
-                                {obj.name} {obj.members.length}
+                                key={index}
+                                onClick={() => handleClick(obj.projectName)}
+                                
+                            >
+
+                                {obj.projectName} {obj.selectedMembers.length}
 
                             </div>
 
@@ -51,6 +71,6 @@ const MyProjectsComponent = props => {
 
 };
 
-const MyProjects = connect(mapCredentials)(MyProjectsComponent);
+const MyProjects = connect(mapCredentials, mapDispatch)(MyProjectsComponent);
 
 export { MyProjects };

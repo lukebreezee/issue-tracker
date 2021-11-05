@@ -77,3 +77,73 @@ app.post('/assign-role', (req, res) => {
     });
     
 });
+
+app.post('/create-project', (req, res) => {
+
+    Team.findOne({username: req.body.teamUsername}, (err, team) => {
+
+        if (err) return res.send(errorMessage);
+
+        const projectIndex = team.projects.findIndex(obj => 
+            
+            obj.projectName === req.body.projectInfo.projectName
+            
+        );
+
+        if (projectIndex !== -1) {
+
+            return res.send({ message: 'A project already exists with this name' });
+
+        }
+
+        team.projects.push(req.body.projectInfo);
+
+        team.markModified();
+
+        team.save((err, team) => {
+
+            if (err) res.send(errorMessage);
+
+            res.send(team);
+
+        });
+
+    });
+
+});
+
+app.post('/new-ticket', (req, res) => {
+
+    Team.findOne({username: req.body.teamUsername}, (err, team) => {
+
+        if (err) return res.send(errorMessage);
+
+        const ticketIndex = team.tickets.findIndex(obj => 
+
+            obj.projectName === req.body.ticketInfo.projectName
+
+            && obj.ticketName === req.body.ticketInfo.ticketName
+
+        );
+
+        if (ticketIndex !== -1) {
+
+            return res.send({ message: 'This project already has a ticket with that name'});
+
+        }
+
+        team.tickets.push(req.body.ticketInfo);
+
+        team.markModified();
+
+        team.save((err, team) => {
+
+            if (err) return res.send(errorMessage);
+
+            return res.send(team);
+
+        });
+
+    });
+
+});

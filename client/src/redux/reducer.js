@@ -9,8 +9,10 @@ const initialState = {
         username: null,
         teamUsername: null
     },
-  
-    teamInfo: {}
+
+    teamInfo: {},
+    
+    currentProject: null
   
 };
 
@@ -50,6 +52,11 @@ const rootReducer = (state = initialState, action) => {
 
             tmp.teamInfo = {};
             tmp.userInfo.teamUsername = null;
+            break;
+
+        case 'CURRENT PROJECT UPDATE':
+
+            tmp.currentProject = action.projectName;
             break;
 
         default:

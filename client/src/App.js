@@ -15,6 +15,9 @@ import { TicketsAdminPm } from './components/Tickets/TicketsAdminPm';
 import { TicketsDev } from './components/Tickets/TicketsDev';
 import { ProjectsAdminPm } from './components/Projects/ProjectsAdminPm';
 import { ProjectsDev } from './components/Projects/ProjectsDev';
+import { CreateProject } from './components/Projects/CreateProject';
+import { ViewProject } from './components/Projects/ViewProject';
+import { NewTicket } from './components/Tickets/NewTicket';
 
 import { mapCredentials } from './redux/mapToProps.js';
 
@@ -51,7 +54,8 @@ const AppComponent = props => {
   
     }
 
-}, [history, location.pathname, props]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history, location.pathname]);
 
 useEffect(() => {
 
@@ -99,6 +103,12 @@ useEffect(() => {
             <Route path="/projects-admin-pm" component={ProjectsAdminPm} />
 
             <Route path="/projects-dev" component={ProjectsDev} />
+
+            <Route path="/create-project" component={CreateProject} />
+
+            <Route path="/view-project" component={ViewProject} />
+
+            <Route path="/new-ticket" component={NewTicket} />
 
           </Switch>
 

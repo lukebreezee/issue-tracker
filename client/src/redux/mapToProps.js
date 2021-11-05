@@ -3,7 +3,8 @@ const mapCredentials = state => {
     return {
 
         userInfo: state.root.userInfo,
-        teamInfo: state.root.teamInfo
+        teamInfo: state.root.teamInfo,
+        currentProject: state.root.currentProject
 
     }
 
@@ -40,6 +41,12 @@ const mapDispatch = dispatch => {
         teamInfoUpdate: teamObj => {
 
             dispatch({type: 'TEAM INFO UPDATE', teamObj});
+
+        },
+
+        currentProjectUpdate: projectName => {
+
+            dispatch({type: 'CURRENT PROJECT UPDATE', projectName});
 
         }
 

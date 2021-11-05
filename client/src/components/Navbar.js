@@ -48,19 +48,19 @@ const NavbarComponent = props => {
 
                 </Link>
 
-                <Link to="/tickets">
+                <Link to="/tickets-admin-pm">
 
                     <li className="nav-link">Tickets</li>
 
                 </Link>
 
-                <Link to="/members" >
+                <Link to="/members-admin" >
 
                     <li className="nav-link">Members</li>
 
                 </Link>
 
-                <Link to="/projects" >
+                <Link to="/projects-admin-pm" >
 
                     <li className="nav-link">Projects</li>
 

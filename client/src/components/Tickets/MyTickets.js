@@ -5,7 +5,7 @@ const MyTicketsComponent = props => {
 
     const userTickets = props.teamInfo.tickets.filter(obj => {
 
-        const members = [...obj.members];
+        const members = [...obj.ticketMembers];
 
         if (members.indexOf(props.userInfo.username) !== -1) {
 
@@ -27,11 +27,11 @@ const MyTicketsComponent = props => {
             
                 {
 
-                    userTickets.map(obj => {           
+                    userTickets.map((obj, index) => {           
 
                         return (
 
-                            <div>
+                            <div key={index}>
 
                                 {obj.name} {obj.project} {obj.members.length}
 

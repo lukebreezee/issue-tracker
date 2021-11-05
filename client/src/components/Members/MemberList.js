@@ -13,11 +13,11 @@ const MemberListComponent = props => {
 
                 {
 
-                    props.teamInfo.members.map(obj => {
+                    props.teamInfo.members.map((obj, index) => {
 
                         return (
 
-                            <div>{obj.firstName} {obj.lastName}</div>
+                            <div key={index}>{obj.firstName} {obj.lastName}</div>
 
                         );
 

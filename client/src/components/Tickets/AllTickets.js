@@ -13,13 +13,13 @@ const AllTicketsComponent = props => {
             
                 {
 
-                    props.teamInfo.tickets.map(obj => {                        
+                    props.teamInfo.tickets.map((obj, index) => {                        
 
                         return (
 
-                            <div>
+                            <div key={index}>
 
-                                {obj.name} {obj.project} {obj.members.length}
+                                {obj.ticketName} {obj.projectName} {obj.ticketMembers.length}
 
                             </div>
 
