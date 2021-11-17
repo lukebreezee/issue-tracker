@@ -1,15 +1,12 @@
-const helpers = require('./helpers');
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const bcrypt = require('bcrypt');
 require('./Config/dbConfig');
 
 const User = require('./Models/User');
-const Team = require('./Models/Team');
 
 const app = express();
 

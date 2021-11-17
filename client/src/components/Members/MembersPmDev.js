@@ -6,7 +6,7 @@ const MembersPmDevComponent = props => {
     
     return (
 
-        <div className="aligned">
+        <div className="main-page-parent">
             
             <MemberList />
 

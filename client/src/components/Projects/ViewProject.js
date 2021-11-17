@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { mapCredentials } from '../../redux/mapToProps';
+import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 
 const ViewProjectComponent = props => {
 
@@ -49,91 +49,121 @@ const ViewProjectComponent = props => {
 
     }
 
+    const handleClick = ticketName => {
+
+        props.currentTicketUpdate(ticketName);
+
+        history.push('/view-ticket');
+
+    }
+
     return (
 
-        <div className="aligned">
+        <div className="main-page-parent">
+
+            <div>
             
-            <div>Details:</div>
+                <div>Details:</div>
 
-            <div>Name: {projectInfo.projectName}</div>
+                <div>Name: {projectInfo.projectName}</div>
 
-            <div>Date Created: {projectInfo.date}</div>
+                <div>Date Created: {projectInfo.date}</div>
 
-            <div> 
+                <div> 
+                    
+                    Creator: {creatorInfo.firstName} {creatorInfo.lastName} ({creatorInfo.role})
+                    
+                </div>
+
+                <div>Priority: {projectInfo.priority}</div>
+
+                <br />
+
+                <div>Description: {projectInfo.description}</div>
+
+                <br />
+
+                <div>Teammates On Project:</div>
+
+                <div className="scrolling-list">
+
+                    {
+
+                        projectInfo.selectedMembers.map((username, index) => {
+
+                            const teamMembers = [...props.teamInfo.members];
+
+                            const currentMember = teamMembers.find(obj => 
+                                
+                                obj.username === username
+                                
+                            );
+
+                            return (
+
+                                <div key={index}>
+                                    
+                                    {currentMember.firstName} {currentMember.lastName} ({currentMember.role})
+                                    
+                                </div>
+
+                            );
+
+                        })
+
+                    }
+
+                </div>
+
+                </div>
+
+                <div>
+
+                <div>Tickets For This Project:</div>
+
+                <div className="scrolling-list">
+
+                    {
+
+                        props.teamInfo.tickets.map((obj, index) => {
+
+                            if (obj.projectName === projectInfo.projectName) {
+
+                                return (
+                                
+                                    <div 
+
+                                        key={index}
+                                        onClick={() => handleClick(obj.ticketName)}
+                                        
+                                    >
+                                        {obj.ticketName}
+                                        
+                                    </div>
+                                    
+                                );
+
+                            } else {
+
+                                return null;
+
+                            }
+
+                        })
+
+                    }
+
+                </div>
+
                 
-                Creator: {creatorInfo.firstName} {creatorInfo.lastName} ({creatorInfo.role})
-                
-            </div>
-
-            <div>Priority: {projectInfo.priority}</div>
-
-            <br />
-
-            <div>Description: {projectInfo.description}</div>
-
-            <br />
-
-            <div>Teammates On Project:</div>
-
-            <div className="scrolling-list">
 
                 {
 
-                    projectInfo.selectedMembers.map((username, index) => {
-
-                        const teamMembers = [...props.teamInfo.members];
-
-                        const currentMember = teamMembers.find(obj => 
-                            
-                            obj.username === username
-                            
-                        );
-
-                        return (
-
-                            <div key={index}>
-                                
-                                {currentMember.firstName} {currentMember.lastName} ({currentMember.role})
-                                
-                            </div>
-
-                        );
-
-                    })
+                    newTicket
 
                 }
 
             </div>
-
-            <div>Tickets For This Project:</div>
-
-            <div className="scrolling-list">
-
-                {
-
-                    props.teamInfo.tickets.map((obj, index) => {
-
-                        if (obj.projectName === projectInfo.projectName) {
-
-                            return <div key={index}>{obj.ticketName}</div>
-
-                        } else {
-
-                            return null;
-
-                        }
-
-                    })
-
-                }
-
-            </div>
-
-            {
-
-                newTicket
-
-            }
             
         </div>
 
@@ -141,6 +171,6 @@ const ViewProjectComponent = props => {
 
 };
 
-const ViewProject = connect(mapCredentials)(ViewProjectComponent);
+const ViewProject = connect(mapCredentials, mapDispatch)(ViewProjectComponent);
 
 export { ViewProject };

@@ -18,32 +18,50 @@
 .login-fields {
   display: flex;
   flex-direction: column;
+  max-width: fit-content;
+  gap: 10px;
 }
 
 nav {
-  background-color: #5C6D9A;
-  max-height: 8vh;
+  max-height: 15vh;
   width: 100vw;
   position: fixed;
   top: 0;
   align-self: center;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
   z-index: 1;
   color: white;
+  box-shadow: 1px 1px 5px #444444;
 }
 
 nav > ul {
-  display: flex;
-  justify-content: space-around;
-  width: 40%;
+  background-color: #FFFFFF;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr;
+  justify-content: center;
   align-items: center;
   list-style: none;
+  margin: 0;
+  padding: 0 17px 0 17px;
+  z-index: 1;
 }
 
 .nav-link {
-  color: white;
+
+  color: #444444;
+  align-items: center;
+  margin-left: 1px;
+  margin-right: 1px;
+  font-family: Ubuntu, monospace;
+  justify-self: center;
+
+}
+
+.link-component {
+
+  text-decoration: none;
+  justify-self: center;
+
 }
 
 #app {
@@ -57,9 +75,7 @@ nav > ul {
 }
 
 .aligned {
-  position: absolute;
-  top: 60px;
-  z-index: 0;
+  align-self: center;
 }
 
 #registration-status, 
@@ -72,18 +88,117 @@ nav > ul {
 
 .scrolling-list {
 
-  width: 200px;
+  width: 600px;
   height: 200px;
   overflow-y: scroll;
   overflow-x:hidden;
   border-style: solid;
-  border-color: #5C6D9A;
+  border-color: #CCCCCC;
+  border-width: 2px;
+  box-shadow: 1px 1px 5px #CCCCCC;
+  background-color: #FFFFFF;
 
 }
 
-.scrolling-list > div:hover {
+.scrolling-list > div {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: left;
+  align-items: center;
+  grid-gap: 10px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #EEEEEE;
+
+}
+
+.scrolling-list-div-left {
+
+  margin-left: 5px;
+
+}
+
+.scrolling-list-div-right {
+
+  margin-right: 5px;
+
+}
+
+.member-list-headers {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: left;
+  align-items: center;
+  grid-gap: 10px;
+
+}
+
+.ticket-list-headers {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  justify-items: left;
+  align-items: center;
+  grid-gap: 10px;
+
+}
+
+.scrolling-list-small {
+
+  width: 300px;
+  height: 200px;
+  overflow-y: scroll;
+  overflow-x:hidden;
+  border-style: solid;
+  border-color: #CCCCCC;
+  border-width: 2px;
+  box-shadow: 1px 1px 5px #CCCCCC;
+  background-color: #FFFFFF;
+
+}
+
+.scrolling-list-small > div {
+
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #EEEEEE;
+
+}
+
+.scrolling-list-small > div:hover,
+.scrolling-list-medium > div:hover {
 
   cursor: pointer;
+  background-color: #EEEEEE;
+
+}
+
+.scrolling-list-medium {
+
+  width: 500px;
+  height: 200px;
+  overflow-y: scroll;
+  overflow-x:hidden;
+  border-style: solid;
+  border-color: #CCCCCC;
+  border-width: 2px;
+  box-shadow: 1px 1px 5px #CCCCCC;
+  background-color: #FFFFFF;
+
+}
+
+.ticket-list-div {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  justify-items: left;
+  align-items: center;
+  grid-gap: 10px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #EEEEEE;
 
 }
 
@@ -93,3 +208,129 @@ nav > ul {
   padding-bottom: 100px;
 
 }
+
+#logo {
+
+  width: 165px;
+  margin: 5px 0 5px 0;
+
+}
+
+@keyframes colorize-nav-button {
+
+  0% {
+
+    color: #444444;
+
+  }
+
+  100% {
+
+    color: #FF7700
+
+  }
+
+}
+
+.nav-link:hover {
+
+  animation-name: colorize-nav-button;
+  animation-duration: .25s;
+  animation-fill-mode: forwards;
+
+}
+
+#parent-div {
+
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.main-page-parent {
+
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+
+}
+
+.secondary-page-parent {
+
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  position: absolute;
+  top: 25%;
+  padding-bottom: 15%;
+
+}
+
+#app {
+
+  background: linear-gradient(90deg, #F4FAFF, #FFF9F4);
+
+}
+
+.spaced-form {
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+}
+
+#github-button,
+#google-button {
+
+  width: 100%;
+  margin: 0;
+  font-size: 15px;
+  font-family: Ubuntu;
+  height: 55px;
+
+}
+
+@keyframes colorize-github-button {
+
+  100% {
+
+    background-color: #222222;
+    border-style: none;
+
+  }
+
+}
+
+@keyframes colorize-google-button {
+
+  100% {
+
+    background-color: #AF0D1F;
+    border-style: none;
+
+  }
+
+}
+
+#github-button:hover {
+
+  animation-name: colorize-github-button;
+  animation-duration: .25s;
+  animation-fill-mode: forwards;
+  cursor: pointer;
+
+}
+
+#google-button:hover {
+
+  animation-name: colorize-google-button;
+  animation-duration: .25s;
+  animation-fill-mode: forwards;
+  cursor: pointer;
+
+}
+

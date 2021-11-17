@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { mapCredentials, mapDispatch } from "../../redux/mapToProps";
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
+import { sendNotification } from '../../helpers';
 import axios from "axios";
 
 
@@ -114,7 +115,9 @@ const NewTicketComponent = props => {
                 priority,
                 date: Date().toString(),
                 creator: props.userInfo.username,
-                projectName: projectInfo.projectName
+                projectName: projectInfo.projectName,
+                comments: [],
+                status: 'Not Started'
 
             },
             teamUsername: props.teamInfo.username
@@ -132,6 +135,18 @@ const NewTicketComponent = props => {
             console.log(res.data);
 
             props.teamInfoUpdate(res.data);
+
+            props.currentTicketUpdate(ticketName);
+
+            sendNotification({
+
+                type: 'NEW TICKET',
+                projectName: projectInfo.projectName,
+                memberList: ticketMembers
+
+            });
+
+            history.push('/view-ticket');
 
         });
 

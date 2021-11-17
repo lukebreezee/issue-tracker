@@ -18,11 +18,14 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import './index.css';
+import './dist/css/oauth-buttons.min.css';
 import App from './App';
 
 ReactDOM.render(
 
   <Provider store={store}>
+
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
 
     <Router>
 

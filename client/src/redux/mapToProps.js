@@ -4,7 +4,9 @@ const mapCredentials = state => {
 
         userInfo: state.root.userInfo,
         teamInfo: state.root.teamInfo,
-        currentProject: state.root.currentProject
+        currentProject: state.root.currentProject,
+        currentTicket: state.root.currentTicket,
+        googleInfo: state.root.googleInfo
 
     }
 
@@ -48,6 +50,18 @@ const mapDispatch = dispatch => {
 
             dispatch({type: 'CURRENT PROJECT UPDATE', projectName});
 
+        },
+
+        currentTicketUpdate: ticketName => {
+
+            dispatch({type: 'CURRENT TICKET UPDATE', ticketName});
+
+        },
+
+        googleInfoUpdate: obj => {
+
+            dispatch({type: 'GOOGLE INFO UPDATE', obj});
+        
         }
 
     };

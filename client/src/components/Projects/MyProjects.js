@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
+import Button from 'react-bootstrap/Button';
 
 const MyProjectsComponent = props => {
 
@@ -31,6 +32,26 @@ const MyProjectsComponent = props => {
         history.push('/view-project')
 
     };
+
+    let CreateProjectButton;
+
+    if (props.role !== 'dev') {
+
+        CreateProjectButton = (
+
+            <Button variant="primary" onClick={() => history.push('/create-project')}>
+                
+                Create New Project
+                
+            </Button>
+
+        );
+
+    } else {
+
+        CreateProjectButton = null;
+
+    }
     
     return (
 
@@ -64,6 +85,14 @@ const MyProjectsComponent = props => {
                 }
 
             </div>
+
+            <br />
+
+            {
+
+                CreateProjectButton
+
+            }
 
         </div>
 

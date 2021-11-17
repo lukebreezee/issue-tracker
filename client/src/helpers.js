@@ -108,4 +108,72 @@ const updateUser = (key, updateValue, username) => {
 
 };
 
-export { checkPassword, checkEmail, getTeamInfo, updateUser };
+const sendNotification = params => {
+
+    let notification;
+
+    const userInfo = store.getState().root.userInfo;
+
+    const first = userInfo.firstName;
+
+    const last = userInfo.lastName;
+
+    switch(params.type) {
+
+        case 'NEW PROJECT':
+
+            notification = 
+                
+                `${first} ${last} has added you to a project: ${params.name}`;
+
+            break;
+
+        case 'NEW TICKET':
+
+            notification = `You have been assigned a new ticket on: ${params.projectName}`;
+
+            break;
+
+        case 'NEW COMMENT':
+
+            notification = 
+            
+                `${params.author} has made a comment on "${params.ticketName}": "${params.comment}"`;
+
+            break;
+
+        case 'TICKET STATUS CHANGE':
+
+            notification = 
+            
+                `${first} ${last} has changed the status of "${params.ticketName}" to "${params.status}"`;
+
+            break;
+
+        default:
+
+            break;
+
+    }
+
+    axios.post('http://localhost:5000/send-notification', {
+
+        teamUsername: userInfo.teamUsername,
+        memberList: params.memberList,
+        notification
+
+    });
+
+};
+
+
+
+export { 
+    
+    checkPassword, 
+    checkEmail, 
+    getTeamInfo, 
+    updateUser,
+    sendNotification
+
+};

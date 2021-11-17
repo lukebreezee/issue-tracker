@@ -1,40 +1,9 @@
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCredentials, mapDispatch } from '../redux/mapToProps';
-import axios from 'axios';
+import logo from '../images/star-trak-logo.png';
 
 const NavbarComponent = props => {
-
-    let history = useHistory();
-
-    const handleLogOut = () => {
-
-        props.userLogOut();
-
-        history.push('/login');
-
-    };
-
-    const handleTeamLogOut = () => {
-
-        axios.post('http://localhost:5000/delete-member', {
-
-            teamUsername: props.userInfo.teamUsername,
-            username: props.userInfo.username
-
-        });
-
-        axios.put('http://localhost:5000/update-user', {
-
-            username: props.userInfo.username,
-            key: 'teamUsername',
-            updateValue: null
-
-        });
-
-        props.teamLogOut();
-
-    }
         
     return (
 
@@ -44,55 +13,43 @@ const NavbarComponent = props => {
 
                 <Link to="/" >
 
-                    <li className="nav-link">Issue Tracker</li>
+                    <li>
+
+                        <img className="nav-link" src={logo} alt="Star-Trak" id="logo" />
+
+                    </li>
 
                 </Link>
 
-                <Link to="/tickets-admin-pm">
+                <Link to="/tickets-admin-pm" className="link-component">
 
                     <li className="nav-link">Tickets</li>
 
                 </Link>
 
-                <Link to="/members-admin" >
+                <Link to="/members-admin" className="link-component">
 
                     <li className="nav-link">Members</li>
 
                 </Link>
 
-                <Link to="/projects-admin-pm" >
+                <Link to="/projects-admin-pm" className="link-component">
 
                     <li className="nav-link">Projects</li>
 
                 </Link>
 
-                <Link to="/notifs" >
+                <Link to="/notifs" className="link-component">
 
                     <li className="nav-link">Notifications</li>
 
                 </Link>
 
-                <Link to="/account" >
+                <Link to="/account" className="link-component">
 
                     <li className="nav-link">Account</li>
 
                 </Link>
-
-                <Link to="/login">
-
-                    <li className="nav-link">Login</li>
-
-                </Link>
-
-                <Link to ="/team-login">
-
-                    <li className="nav-link">Team Login</li>
-
-                </Link>
-
-                <button onClick={() => handleLogOut()}>Log Out</button>
-
-                <button onClick={() => handleTeamLogOut()}>Leave Team</button>
 
             </ul>
 

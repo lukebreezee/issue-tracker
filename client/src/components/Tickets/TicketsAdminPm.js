@@ -36,7 +36,7 @@ const TicketsAdminPmComponent = props => {
     
     return (
 
-        <div className="aligned">
+        <div className="secondary-page-parent">
 
             <MyTickets />
             

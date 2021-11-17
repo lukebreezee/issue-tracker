@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { mapCredentials } from '../../redux/mapToProps';
 import { useState } from 'react';
 import { getTeamInfo } from '../../helpers';
+import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
 const AssignRolesComponent = props => {
@@ -101,11 +102,13 @@ const AssignRolesComponent = props => {
     
     return (
 
-        <div>
+        <div id="assign-roles">
 
-            <div>Assign Roles</div>
+            <h3>Assign Roles</h3>
 
-            <div className="scrolling-list" id="assign-roles-list">
+            <br />
+
+            <div className="scrolling-list-small" id="assign-roles-list">
                 
                 {
 
@@ -128,6 +131,10 @@ const AssignRolesComponent = props => {
 
             </div>
 
+            <br />
+
+            <p id="assign-submit-status"></p>
+
             <select id="assign-role-select">
 
                 <option>Role</option>
@@ -140,9 +147,23 @@ const AssignRolesComponent = props => {
 
             </select>
 
-            <button onClick={() => handleAssign()}>Assign</button>
+            <br />
 
-            <p id="assign-submit-status"></p>
+            <br />
+
+            <Button 
+
+                variant="primary" 
+                onClick={() => handleAssign()}
+                color="#0088FF"
+            
+            >
+                
+                Assign
+            
+            </Button>
+
+            <br />
 
         </div>
 

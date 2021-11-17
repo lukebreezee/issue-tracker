@@ -25,3 +25,41 @@ app.put('/update-user', (req, res) => {
     .clone();
 
 });
+
+app.post('/send-notification', (req, res) => {
+
+    User.find(
+        
+        { teamUsername: req.body.teamUsername },
+
+        (err, users) => {
+
+            if (err) return res.send(errorMessage);
+
+            if (!users) return res.send({ message: 'No users found' });
+
+            for (let i = 0; i < users.length; i++) {
+
+                if (req.body.memberList.indexOf(users[i].username) !== -1) {
+
+                    users[i].notifications.push(req.body.notification);
+
+                    users[i].markModified('notifications');
+
+                    users[i].save(err => {
+
+                        if (err) return res.send(errorMessage);
+
+                    });
+
+                }
+
+            }
+
+            return res.send({ message: 'Success' });
+
+        }
+        
+    );
+
+});

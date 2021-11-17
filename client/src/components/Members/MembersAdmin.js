@@ -36,9 +36,11 @@ const MembersAdminComponent = props => {
     
     return (
 
-        <div className="aligned">
-            
+
+        <div className="main-page-parent">
+
             <AssignRoles />
+
             <MemberList />
 
         </div>

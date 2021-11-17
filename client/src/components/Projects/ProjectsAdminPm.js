@@ -35,15 +35,9 @@ const ProjectsAdminPmComponent = props => {
     
     return (
 
-        <div className="aligned">
+        <div className="main-page-parent">
 
-            <MyProjects />
-
-            <button onClick={() => history.push('/create-project')}>
-                
-                Create New Project
-                
-            </button>
+            <MyProjects role="admin-pm" />
 
         </div>
 

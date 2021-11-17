@@ -6,9 +6,9 @@ const ProjectsDevComponent = props => {
     
     return (
 
-        <div className="aligned">
+        <div className="main-page-parent">
 
-            <MyProjects />
+            <MyProjects role="dev" />
 
         </div>
 

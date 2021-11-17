@@ -5,9 +5,19 @@ const MemberListComponent = props => {
 
     return (
 
-        <div>
+        <div id="member-list">
 
-            <div>Member List</div>
+            <h3>Member List</h3>
+
+            <div className="member-list-headers">
+
+                <div className="scrolling-list-div-left"><u>Name</u></div>
+
+                <div><u>Role</u></div>
+
+                <div><u>Email</u></div>
+
+            </div>
 
             <div className="scrolling-list">
 
@@ -17,7 +27,23 @@ const MemberListComponent = props => {
 
                         return (
 
-                            <div key={index}>{obj.firstName} {obj.lastName}</div>
+                            <div key={index} >
+                                
+                                <div className="scrolling-list-div-left">
+                                    
+                                    {obj.firstName} {obj.lastName}
+                                    
+                                </div>
+
+                                <div>{obj.role} </div>
+
+                                <div className="scrolling-list-div-right">
+                                    
+                                    {obj.username}
+                                    
+                                </div>
+                                
+                            </div>
 
                         );
 

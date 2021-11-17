@@ -5,7 +5,11 @@ const DashboardComponent = props => {
     
     return (
 
-        <div className="aligned">Dashboard</div>
+        <div className="aligned">
+
+            <div>Dashboard</div>
+
+        </div>
 
     );
 

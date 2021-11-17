@@ -1,0 +1,1 @@
+console.log(/\/register|\/login\/github/.test('/login/github/ernweuin'))

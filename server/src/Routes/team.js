@@ -147,3 +147,67 @@ app.post('/new-ticket', (req, res) => {
     });
 
 });
+
+app.post('/ticket-comment', (req, res) => {
+
+    Team.findOne({username: req.body.teamUsername}, (err, team) => {
+
+        if (err) return res.send(errorMessage);
+
+        const tickets = [...team.tickets];
+
+        const ticketIndex = tickets.findIndex(obj => 
+            
+            obj.ticketName === req.body.ticketName
+            && obj.projectName === req.body.projectName
+            
+        );
+
+        tickets[ticketIndex].comments.push(req.body.comment);
+
+        team.tickets[ticketIndex] = tickets[ticketIndex];
+
+        team.save((err, team) => {
+
+            if (err) return res.send(errorMessage);
+
+            return res.send(team);
+
+        });
+
+    });
+
+});
+
+app.post('/change-ticket-status', (req, res) => {
+
+    Team.findOne({username: req.body.teamUsername}, (err, team) => {
+
+        if (err || !team) return res.send(errorMessage);
+
+        const tickets = [...team.tickets];
+
+        const ticketIndex = tickets.findIndex(obj => 
+            
+            obj.ticketName === req.body.ticketName
+            && obj.projectName === req.body.projectName
+            
+        );
+
+        tickets[ticketIndex].status = req.body.newStatus;
+
+        team.tickets[ticketIndex] = tickets[ticketIndex];
+
+        team.markModified('tickets');
+
+        team.save(err => {
+
+            if (err) return res.send(errorMessage);
+
+            return res.send(team);
+
+        });
+
+    });
+
+});

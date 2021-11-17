@@ -12,7 +12,11 @@ const initialState = {
 
     teamInfo: {},
     
-    currentProject: null
+    currentProject: null,
+
+    currentTicket: null,
+
+    googleInfo: {}
   
 };
 
@@ -57,6 +61,16 @@ const rootReducer = (state = initialState, action) => {
         case 'CURRENT PROJECT UPDATE':
 
             tmp.currentProject = action.projectName;
+            break;
+
+        case 'CURRENT TICKET UPDATE':
+
+            tmp.currentTicket = action.ticketName;
+            break;
+
+        case 'GOOGLE INFO UPDATE':
+
+            tmp.googleInfo = action.obj;
             break;
 
         default:

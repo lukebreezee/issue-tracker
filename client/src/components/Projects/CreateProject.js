@@ -2,6 +2,9 @@ import { connect } from 'react-redux';
 import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 import { useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import { sendNotification } from '../../helpers';
 
 const CreateProjectComponent = props => {
 
@@ -12,6 +15,8 @@ const CreateProjectComponent = props => {
     const [priority, setPriority] = useState('Priority');
 
     const [selectedMembers, setSelectedMembers] = useState([]);
+
+    let history = useHistory();
 
     const handleSubmit = event => {
 
@@ -59,6 +64,19 @@ const CreateProjectComponent = props => {
 
             props.teamInfoUpdate(res.data);
 
+            props.currentProjectUpdate(projectName);
+
+            sendNotification({ 
+                
+                type: 'NEW PROJECT',
+                memberList: selectedMembers, 
+                name: projectName,
+                projectName
+            
+            });
+
+            history.push('/view-project');
+
         });
 
     };
@@ -95,79 +113,104 @@ const CreateProjectComponent = props => {
 
     return (
 
-        <div className="aligned">
+        <div className="main-page-parent">
 
-            <form onSubmit={e => handleSubmit(e)}>
+            <form 
 
-                <input
+                onSubmit={e => handleSubmit(e)}
+                className="main-page-parent"
 
-                    type="text" 
-                    placeholder="Project Name" 
-                    onChange={e => setProjectName(e.target.value)}
-                    required
+            >
 
-                />
+                <div>
 
-                <div>Members:</div>
+                    <input
 
-                <div id="create-project-alert"></div>
+                        type="text" 
+                        placeholder="Project Name" 
+                        onChange={e => setProjectName(e.target.value)}
+                        required
 
-                <div className="scrolling-list">
+                    />
 
-                    {
+                    <br />
 
-                        props.teamInfo.members.map((obj, index) => {
+                    <br />
 
-                            if (obj.username === props.userInfo.username) {
+                    <div>Members:</div>
 
-                                return null;
-                                
-                            }
+                    <div id="create-project-alert"></div>
 
-                            return (
+                    <div className="scrolling-list">
 
-                                <div 
+                        {
 
-                                    onClick={e => handleClick(e, obj.username)}
-                                    username={obj.username}
-                                    key={index}
+                            props.teamInfo.members.map((obj, index) => {
 
-                                >
+                                if (obj.username === props.userInfo.username) {
 
-                                    {obj.firstName} {obj.lastName} ({obj.role})
+                                    return null;
+                                    
+                                }
 
-                                </div>
+                                return (
 
-                            );
+                                    <div 
 
-                        })
+                                        onClick={e => handleClick(e, obj.username)}
+                                        username={obj.username}
+                                        key={index}
 
-                    }
+                                    >
+
+                                        {obj.firstName} {obj.lastName} ({obj.role})
+
+                                    </div>
+
+                                );
+
+                            })
+
+                        }
+
+                    </div>
 
                 </div>
 
-                <input 
+                <div>
 
-                    type="text" 
-                    className="description"
-                    onChange={e => setDescription(e.target.value)}
-                    placeholder="Description (Optional)"
+                    <input 
 
-                />
+                        type="text" 
+                        className="description"
+                        onChange={e => setDescription(e.target.value)}
+                        placeholder="Description (Optional)"
 
-                <select onChange={e => setPriority(e.target.value)}>
+                    />
 
-                    <option>Priority</option>
+                    <br />
 
-                    <option>High</option>
+                    <br />
 
-                    <option>Medium</option>
+                    <select onChange={e => setPriority(e.target.value)}>
 
-                    <option>Low</option>
+                        <option>Priority</option>
 
-                </select>
+                        <option>High</option>
 
-                <button type="submit">Create</button>
+                        <option>Medium</option>
+
+                        <option>Low</option>
+
+                    </select>
+
+                    <br />
+
+                    <br />
+
+                    <Button type="submit">Create</Button>
+
+                </div>
 
             </form>
 
