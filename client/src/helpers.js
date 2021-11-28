@@ -58,25 +58,33 @@ const checkEmail = email => {
 
 const getTeamInfo = () => {
 
-    if (!store.getState().root.userInfo.username) {
+    return new Promise ((resolve, reject) => {
 
-        return;
+        if (!store.getState().root.userInfo.username) {
 
-    }
+            return reject({ message: 'User not logged in' });
+    
+        }
+    
+        axios.post('http://localhost:5000/get-team-info', {
+    
+            teamUsername: store.getState().root.userInfo.teamUsername
+    
+        })
 
-    axios.post('http://localhost:5000/get-team-info', {
+        .then(res => {
+    
+            store.dispatch({type: 'TEAM INFO UPDATE', teamObj: res.data});
 
-        teamUsername: store.getState().root.userInfo.teamUsername
+            return resolve(res.data);
+    
+        })
 
-    })
-    .then(res => {
-
-        store.dispatch({type: 'TEAM INFO UPDATE', teamObj: res.data});
-
-    })
-    .catch(() => {
-
-        return 'Error';
+        .catch(() => {
+    
+            return reject('An unexpected error has occured');
+    
+        });
 
     });
 

@@ -53,7 +53,7 @@ const GithubLoginComponent = props => {
         
                 props.userLogIn(res.data);
         
-                history.push('/');
+                history.push('/projects-admin-pm');
         
             });
 

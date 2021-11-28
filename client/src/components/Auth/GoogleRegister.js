@@ -56,7 +56,7 @@ const GoogleRegisterComponent = props => {
 
             props.userLogIn(res.data);
 
-            history.push('/');
+            history.push('/projects-admin-pm');
 
         });
 

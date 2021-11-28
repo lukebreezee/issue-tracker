@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 
 const TeamLoginComponent = props => {
 
@@ -13,7 +14,7 @@ const TeamLoginComponent = props => {
 
         if (props.userInfo.teamUsername) {
 
-            history.push('/');
+            history.push('/projects-admin-pm');
 
         }
 
@@ -60,7 +61,7 @@ const TeamLoginComponent = props => {
 
                         props.teamLogIn(res.data.teamUsername);
 
-                        history.push('/');
+                        history.push('/projects-admin-pm');
 
                     }
 
@@ -113,7 +114,7 @@ const TeamLoginComponent = props => {
                             required 
                         />
 
-                        <input type="submit" required />
+                        <Button type="submit" variant="primary">Submit</Button>
 
                     </form>
 

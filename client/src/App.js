@@ -1,9 +1,6 @@
 import { Login } from './components/Auth/Login';
 import { Navbar } from './components/Navbar';
 import { Dashboard } from './components/Dashboard';
-import { Tickets } from './components/Tickets/Tickets';
-import { Projects } from './components/Projects/Projects';
-import { Members } from './components/Members/Members';
 import { Notifs } from './components/Notifs';
 import { Account } from './components/Account';
 import { Create } from './components/Auth/Create';
@@ -21,6 +18,8 @@ import { NewTicket } from './components/Tickets/NewTicket';
 import { GithubRegister } from './components/Auth/GitHubRegister';
 import { ViewTicket } from './components/Tickets/ViewTicket';
 import { GithubLogin } from './components/Auth/GithubLogin';
+import { ChangeEmail } from './components/Auth/ChangeEmail';
+import { ChangePassword } from './components/Auth/ChangePassword';
 
 import { mapCredentials } from './redux/mapToProps.js';
 
@@ -42,8 +41,6 @@ const AppComponent = props => {
   let history = useHistory();
 
   useEffect(() => {
-
-    console.log(props.teamInfo);
         
     if (
       
@@ -68,13 +65,62 @@ const AppComponent = props => {
 
     let parent = document.getElementById('app');
 
-    if (location.pathname === '/tickets-admin-pm') {
+    switch(location.pathname) {
 
-      parent.style.height = '150vh';
+      case '/tickets-admin-pm':
 
-    } else {
+        parent.style.height = '150vh';
 
-      parent.style.height = '100vh';
+        break;
+
+      case '/notifs':
+
+        if (!props.userInfo.username || !props.userInfo.teamUsername) {
+
+          history.push('/login');
+
+          break;
+
+        }
+
+        const notifCount = props.userInfo.notifications.length;
+
+        if (notifCount < 6) {
+
+          parent.style.height = '100vh';
+
+          break;
+
+        };
+
+        const pageHeight = ((notifCount - 5) * 12 + 100).toString();
+
+        parent.style.height = `${pageHeight}vh`;
+
+        break;
+
+      case '/create-project':
+      case '/view-ticket':
+      case '/members-admin':
+
+        if (window.innerWidth > 700) break;
+
+        parent.style.height = '150vh';
+
+        break;
+
+      case '/view-project':
+      case '/new-ticket':
+
+        if (window.innerWidth > 700) break;
+
+        parent.style.height = '130vh';
+
+        break;
+
+      default:
+
+        parent.style.height = '100vh';
 
     }
 
@@ -103,12 +149,6 @@ useEffect(() => {
               <Route path="/register" component={Create} exact/>
 
               <Route path="/login" component={Login} exact />
-
-              <Route path="/tickets" component={Tickets} />
-
-              <Route path="/members" component={Members} />
-
-              <Route path="/projects" component={Projects} />
 
               <Route path="/notifs" component={Notifs} />
 
@@ -143,6 +183,10 @@ useEffect(() => {
               <Route path="/login/github" component={GithubLogin} />
 
               <Route path="/register/google" component={GoogleRegister} />
+
+              <Route path="/change-email" component={ChangeEmail} />
+
+              <Route path="/change-password" component={ChangePassword} />
 
             </Switch>
 

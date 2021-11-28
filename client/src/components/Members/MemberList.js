@@ -39,7 +39,16 @@ const MemberListComponent = props => {
 
                                 <div className="scrolling-list-div-right">
                                     
-                                    {obj.username}
+                                    <a 
+                                    
+                                        href={`mailto: ${obj.username}`}
+                                        style={{color: '#0088FF'}}
+                                        
+                                    >
+                                        
+                                        {obj.username}
+                                        
+                                    </a>
                                     
                                 </div>
                                 

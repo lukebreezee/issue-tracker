@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { sendNotification } from '../../helpers';
 import axios from "axios";
+import Button from 'react-bootstrap/Button';
 
 
 const NewTicketComponent = props => {
@@ -17,6 +18,20 @@ const NewTicketComponent = props => {
     const [priority, setPriority] = useState('Priority');
 
     let history = useHistory();
+
+    if (!props.userInfo.username) {
+
+        history.push('/login');
+        return null;
+
+    }
+
+    if (!props.userInfo.teamUsername) {
+
+        history.push('/team-login');
+        return null;
+
+    }
 
     const memberObj = props.teamInfo.members.find(elem => 
         
@@ -154,61 +169,111 @@ const NewTicketComponent = props => {
 
     return (
 
-        <div className="aligned">
+        <div>
 
-            <form onSubmit={e => handleSubmit(e)}>
+            <h3>New Ticket</h3>
 
-                <input 
+            <br />
 
-                    type="text" 
-                    placeholder="Ticket Name"
-                    onChange={e => setTicketName(e.target.value)}
-                    required 
+            <div className="main-page-parent">
+
+                <form 
+                
+                    onSubmit={e => handleSubmit(e)}
+                    className="main-page-parent"
                     
-                />
+                >
 
-                <div>Members: </div>
+                    <div>
 
-                <div className="scrolling-list">
+                        <input 
 
-                    {
+                            type="text" 
+                            placeholder="Ticket Name"
+                            onChange={e => setTicketName(e.target.value)}
+                            style={{width: '100%'}}
+                            required 
+                            
+                        />
+
+                        <br />
+
+                        <br />
+
+                        <div>Members You Want On The Ticket: </div>
+
+                        <div className="scrolling-list-small">
+
+                            {
+                            
+                                projectMembers.map(elem => {
+
+                                    return elem;
+
+                                })
+                            
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                    <textarea 
+
+                        wrap="soft"
+                        placeholder="Description (Optional)" 
+                        className="description"
+                        onChange={e => setDescription(e.target.value)}
+                        
+                    />
+
+                    <br />
+
+                    <br />
+
+                    <select 
                     
-                        projectMembers.map(elem => {
+                        onChange={e => setPriority(e.target.value)} 
+                        style={{width: '100%'}}
+                        
+                    >
 
-                            return elem;
+                        <option>Priority</option>
 
-                        })
-                    
-                    }
+                        <option>High</option>
 
-                </div>
+                        <option>Medium</option>
 
-                <input 
+                        <option>Low</option>
 
-                    type="text" 
-                    placeholder="Description (Optional)" 
-                    className="description"
-                    onChange={e => setDescription(e.target.value)}
-                    
-                />
+                    </select>
 
-                <select onChange={e => setPriority(e.target.value)}>
+                    <br />
 
-                    <option>Priority</option>
+                    <br />
 
-                    <option>High</option>
+                    <br />
 
-                    <option>Medium</option>
+                    <Button 
 
-                    <option>Low</option>
+                        variant="primary" 
+                        type="submit" 
+                        style={{width: '100%'}}
+                        
+                    >
+                        Create
+                        
+                    </Button>
 
-                </select>
+                    <div id="new-ticket-alert"></div>
 
-                <button type="submit" >Create</button>
+                    </div>
 
-                <div id="new-ticket-alert"></div>
+                </form>
 
-            </form>
+            </div>
 
         </div>
 

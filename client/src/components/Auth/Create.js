@@ -4,6 +4,7 @@ import { checkPassword, checkEmail } from '../../helpers.js';
 import { connect } from 'react-redux';
 import { mapDispatch, mapCredentials } from '../../redux/mapToProps';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 
 const CreateComponent = props => {
 
@@ -73,7 +74,7 @@ const CreateComponent = props => {
 
                         alert.innerHTML = '';
                         props.userLogIn(res.data);
-                        history.push('/');
+                        history.push('/projects-admin-pm');
 
                 }
             }).catch(() => {
@@ -161,7 +162,7 @@ const CreateComponent = props => {
 
                     <br />
 
-                    <input type="submit" />
+                    <Button type="submit" variant="primary">Submit</Button>
 
                 </form>
 

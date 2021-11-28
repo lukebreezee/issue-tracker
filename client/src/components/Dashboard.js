@@ -1,17 +1,14 @@
 import { connect } from 'react-redux';
 import { mapCredentials } from '../redux/mapToProps';
+import { useHistory } from 'react-router-dom';
 
 const DashboardComponent = props => {
     
-    return (
+    let history = useHistory();
 
-        <div className="aligned">
+    history.push('/projects-admin-pm');
 
-            <div>Dashboard</div>
-
-        </div>
-
-    );
+    return null;
 
 };
 

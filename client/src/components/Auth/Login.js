@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 import Button from 'react-bootstrap/Button';
 import GoogleLogin from 'react-google-login';
+import { getTeamInfo } from '../../helpers';
 
 const LoginComponent = props => {
 
@@ -18,25 +19,23 @@ const LoginComponent = props => {
 
         }
 
-    }, [history, props]);
+    }, []);
     
     const [username, setUsername] = useState('');
 
     const [password, setPassword] = useState('');
 
-    const googleResponseSuccess = async response => {
+    const googleResponseSuccess = response => {
 
         //TODO: CHECK FOR EXISTING ACCOUNT, IF ONE EXISTS, LOG IN. IF NOT, THE FOLLOWING CODE EXECUTES
 
-        await axios.post('http://localhost:5000/google-client-login', {
+        axios.post('http://localhost:5000/google-client-login', {
 
             googleId: response.profileObj.googleId
 
         })
         
         .then(res => {
-
-            console.log(res);
 
             const message = res.data.message;
 
@@ -51,30 +50,49 @@ const LoginComponent = props => {
     
                 }
 
+                const info = response.profileObj;
+
+                props.googleInfoUpdate({
+
+                    googleId: info.googleId,
+                    firstName: info.givenName,
+                    lastName: info.familyName,
+                    username: info.email
+
+                });
+
+                history.push('/register/google');
+
             } else {
 
                 props.userLogIn(res.data);
 
+                // console.log(props.userInfo);
+
+                if (!props.userInfo.teamUsername) history.push('/team-login');
+
                 history.push('/');
-    
-                return;
+
+                // getTeamInfo()
+
+                // .then(() => {
+
+                //     props.logInLogOut();
+
+                //     history.push('/');
+
+                // })
+                
+                // .catch(err => {
+
+                //     document.getElementById('login-status')
+                //     .innerHTML = err.message;
+
+                // });
 
             }
 
         });
-
-        const info = response.profileObj;
-
-        props.googleInfoUpdate({
-
-            googleId: info.googleId,
-            firstName: info.givenName,
-            lastName: info.familyName,
-            username: info.email
-
-        });
-
-        history.push('/register/google');
 
     };
 

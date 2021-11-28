@@ -52,7 +52,7 @@ const AllTicketsComponent = props => {
                                 
                             >
 
-                                <div>{obj.ticketName}</div>
+                                <div className="scrolling-list-div-left">{obj.ticketName}</div>
 
                                 <div>{obj.projectName}</div>
 

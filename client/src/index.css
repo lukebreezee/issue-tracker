@@ -37,7 +37,7 @@ nav {
 nav > ul {
   background-color: #FFFFFF;
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1.6fr 3.2fr 3.2fr 3.2fr 8fr 1.8fr 1.8fr;
   justify-content: center;
   align-items: center;
   list-style: none;
@@ -57,7 +57,8 @@ nav > ul {
 
 }
 
-.link-component {
+.link-component,
+.mobile-bars {
 
   text-decoration: none;
   justify-self: center;
@@ -66,6 +67,7 @@ nav > ul {
 
 #app {
   height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
 }
@@ -131,7 +133,6 @@ nav > ul {
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: left;
   align-items: center;
-  grid-gap: 10px;
 
 }
 
@@ -141,7 +142,15 @@ nav > ul {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   justify-items: left;
   align-items: center;
-  grid-gap: 10px;
+
+}
+
+.project-list-headers {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  justify-items: left;
+  align-items: center;
 
 }
 
@@ -202,10 +211,25 @@ nav > ul {
 
 }
 
+.project-list-div {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  justify-items: left;
+  align-items: center;
+  grid-gap: 10px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #EEEEEE;
+
+}
+
 .description {
 
   width: 200px;
-  padding-bottom: 100px;
+  height: 140px;
+  overflow-wrap: break-word;
+  resize: none;
 
 }
 
@@ -269,6 +293,41 @@ nav > ul {
 
 }
 
+.notification-page-parent {
+
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20%;
+
+}
+
+.account-page-parent {
+
+
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  max-width: 100%;
+  gap: 7px;
+
+}
+
+.account-page-main-parent {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+}
+
+.notification-div {
+
+  padding-top: 1%;
+  padding-bottom: 1%;
+  width: 80vw;
+
+}
+
 #app {
 
   background: linear-gradient(90deg, #F4FAFF, #FFF9F4);
@@ -305,17 +364,6 @@ nav > ul {
 
 }
 
-@keyframes colorize-google-button {
-
-  100% {
-
-    background-color: #AF0D1F;
-    border-style: none;
-
-  }
-
-}
-
 #github-button:hover {
 
   animation-name: colorize-github-button;
@@ -334,3 +382,128 @@ nav > ul {
 
 }
 
+.card-ul {
+
+  list-style: none;
+
+}
+
+.card {
+
+  border-style: solid;
+  border-color: #CCCCCC;
+  border-width: 2px;
+  box-shadow: 1px 1px 5px #CCCCCC;
+
+}
+
+.nav-icon:hover {
+
+  animation-name: colorize-nav-button;
+  animation-duration: .25s;
+  animation-fill-mode: forwards;
+
+}
+
+#update-name {
+
+  /* display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  overflow-x: visible; */
+  width: 130%;
+
+}
+
+#update-button-parent {
+
+  display: flex;
+
+}
+
+#update-button {
+
+  align-self: center;
+  justify-self: center;
+  position: relative;
+  bottom: 25%;
+  right: 15%;
+
+}
+
+.change-auth {
+
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  column-gap: 3px;
+  position: relative;
+  left: 15%;
+
+}
+
+.change-auth-form {
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+}
+
+#my-projects-list {
+
+  width: 600px;
+
+}
+
+@media (max-width: 700px) {
+
+  nav > ul {
+
+    background-color: #FFFFFF;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0 17px 0 17px;
+    z-index: 1;
+
+  }
+
+  #my-projects-list {
+
+    width: 300px;
+
+  }
+
+  .main-page-parent {
+
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15%;
+
+  }
+
+  .scrolling-list {
+
+    width: 300px;
+
+  }
+
+  .scrolling-list-medium {
+
+    width: 300px;
+
+  }
+
+  #view-ticket-parent,
+  #members-admin-parent {
+
+    margin-top: 60%;
+
+  }
+
+}

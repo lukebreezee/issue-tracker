@@ -6,8 +6,10 @@ import storage from 'redux-persist/lib/storage';
 const initialState = {
 
     userInfo: {
+
         username: null,
         teamUsername: null
+        
     },
 
     teamInfo: {},
@@ -27,7 +29,7 @@ const persistConfig = {
 
 const rootReducer = (state = initialState, action) => {
 
-    const tmp = Object.assign({}, state);
+    const tmp = {...state};
 
     switch(action.type) {
 

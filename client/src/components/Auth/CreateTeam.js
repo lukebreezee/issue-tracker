@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { checkPassword, updateUser } from '../../helpers';
 import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 import { connect } from 'react-redux';
-import { store } from '../../redux/store';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 
 const CreateTeamComponent = props => {
 
@@ -14,7 +14,7 @@ const CreateTeamComponent = props => {
 
         if (props.userInfo.teamUsername) {
 
-            history.push('/');
+            history.push('/projects-admin-pm');
 
         }
 
@@ -89,7 +89,7 @@ const CreateTeamComponent = props => {
                     props.teamInfoUpdate(res.data);
                     props.teamLogIn(res.data.username);
                     updateUser('teamUsername', res.data.username, props.userInfo.username);
-                    history.push('/');
+                    history.push('/projects-admin-pm');
 
             }
         })
@@ -133,7 +133,7 @@ const CreateTeamComponent = props => {
                     required
                 />
 
-                <input type="submit" />
+                <Button type="submit" variant="primary">Submit</Button>
 
                 <Link to="/team-login" className="login-link" >Back to team login</Link>
 

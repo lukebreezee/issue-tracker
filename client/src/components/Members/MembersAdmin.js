@@ -8,6 +8,8 @@ const MembersAdminComponent = props => {
 
     let history = useHistory();
 
+    console.log(props.teamInfo);
+
     if (!props.userInfo.username) {
 
         history.push('/login');
@@ -37,7 +39,7 @@ const MembersAdminComponent = props => {
     return (
 
 
-        <div className="main-page-parent">
+        <div className="main-page-parent" id="members-admin-parent">
 
             <AssignRoles />
 

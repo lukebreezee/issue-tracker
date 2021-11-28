@@ -63,7 +63,6 @@ const mapDispatch = dispatch => {
             dispatch({type: 'GOOGLE INFO UPDATE', obj});
         
         }
-
     };
 
 };

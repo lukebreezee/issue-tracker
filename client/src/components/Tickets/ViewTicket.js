@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { mapCredentials, mapDispatch } from "../../redux/mapToProps";
 import { sendNotification } from '../../helpers';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
@@ -11,9 +12,23 @@ const ViewTicketComponent = props => {
 
     const [comment, setComment] = useState('');
 
-    const [newTicketStatus, setNewTicketStatus] = useState('Change Status');
+    const [newTicketStatus, setNewTicketStatus] = useState('Status');
 
     let history = useHistory();
+
+    if (!props.userInfo.username) {
+
+        history.push('/login');
+        return null;
+
+    }
+
+    if (!props.userInfo.teamUsername) {
+
+        history.push('/team-login');
+        return null;
+
+    }
 
     if (!props.currentTicket) {
 
@@ -102,7 +117,7 @@ const ViewTicketComponent = props => {
 
         console.log(newTicketStatus);
 
-        if (newTicketStatus === 'Change Status') {
+        if (newTicketStatus === 'Status') {
 
             alert.innerHTML = 'Please select a new status';
             return;
@@ -161,121 +176,178 @@ const ViewTicketComponent = props => {
 
     return (
 
-        <div className="main-page-parent">
+        <div>
 
-            <div>
+            <h3>{ticketInfo.ticketName}</h3>
 
-                <div>Ticket Name: {ticketInfo.ticketName}</div>
+            <br />
 
-                <div>Project: {ticketInfo.projectName}</div>
+            <div className="main-page-parent" id="view-ticket-parent">
 
-                <div>Creator: {creatorInfo.firstName} {creatorInfo.lastName} ({creatorInfo.role})</div>
+                <div>
 
-                <div>Priority: {ticketInfo.priority}</div>
-
-                <div>Date Created: {ticketInfo.date.slice(0, 15)}</div>
-
-                <div>Status: {ticketInfo.status}</div>
- 
-                <div>Description:</div>
-
-                <div>{ticketInfo.description}</div>
-
-                <select onChange={e => setNewTicketStatus(e.target.value)}>
-
-                    <option>Change Status</option>
-
-                    <option>Not Started</option>
-
-                    <option>In Progress</option>
-
-                    <option>Finished</option>
-
-                </select>
-
-                <br />
-
-                <Button variant="primary" onClick={() => changeTicketStatus()}>
+                    {/*
+                            
+                        Below is derived from react-bootstrap docs:
                     
-                    Submit
+                        https://mdbootstrap.com/docs/b5/react/components/cards/ 
+                            
+                    */}
+
+                    <MDBCard >
+
+                        <MDBCardBody 
+
+                            style={{
+                                
+                                borderStyle: 'solid', 
+                                borderColor: '#CCCCCC', 
+                                borderWidth: '2px',
+                                boxShadow: '1px 1px 5px #CCCCCC'
+                                
+                            }}
+                            
+                        >
+
+                            <MDBCardTitle>Details</MDBCardTitle>
+
+                            <MDBCardText>
+                                
+                                <ul className="card-ul">
+
+                                    <li>Project: {ticketInfo.projectName}</li>
+
+                                    <li>Creator: {creatorInfo.firstName} {creatorInfo.lastName}</li>
+
+                                    <li>Priority: {ticketInfo.priority}</li>
+
+                                    <li>Date Created: {ticketInfo.date.slice(4, 15)}</li>
+
+                                    <li>Status: {ticketInfo.status}</li>
+
+                                </ul>
+                                
+                            </MDBCardText>
+
+                        </MDBCardBody>
+
+                    </MDBCard>
+
+                    <br />
+
+                    <select onChange={e => setNewTicketStatus(e.target.value)}>
+
+                        <option>Status</option>
+
+                        <option>Not Started</option>
+
+                        <option>In Progress</option>
+
+                        <option>Finished</option>
+
+                    </select>
+
+                    <Button 
                     
-                </Button>
+                        variant="outline-primary" 
+                        onClick={() => changeTicketStatus()}
+                        style={{marginLeft: '10px', padding: '1px 3px 1px 3px'}}
+                        
+                    >
+                        
+                        Change
+                        
+                    </Button>
 
-                <br />
+                    <br />
 
-                <div id="ticket-status-alert"></div>
+                    <div id="ticket-status-alert"></div>
 
-            </div>
+                    <br />
 
-            <div className="spaced-form">
+                    <h5>Description:</h5>
 
-                <div>Comments:</div>
-
-                <div className="scrolling-list-small">
-
-                    {
-
-                        ticketInfo.comments.map((comment, index) => {
-
-                            return <div key={index}>{comment.author}: "{comment.body}"</div>
-
-                        })
-
-                    }
+                    <div style={{maxWidth: '300px'}}>{ticketInfo.description}</div>
 
                 </div>
+                
+                <div>
 
-                <form className="spaced-form" onSubmit={e => submitComment(e)}>
+                    <div className="spaced-form">
 
-                    <input 
+                        <h5>Comments:</h5>
 
-                        type="text" 
-                        placeholder="New Comment" 
-                        onChange={e => setComment(e.target.value)}
-                        
-                    />
+                        <div className="scrolling-list-small" style={{height: '100px'}}>
 
-                    
+                            {
 
-                    <Button variant="primary" type="submit">Submit</Button>
+                                ticketInfo.comments.map((comment, index) => {
 
-                </form>
+                                    return <div key={index}>{comment.author}: "{comment.body}"</div>
 
-                <div id="comment-alert"></div>
+                                })
 
-            </div>
+                            }
 
-            <div>
+                        </div>
 
-                <div>Teammates On Ticket:</div>
+                        <form className="spaced-form" onSubmit={e => submitComment(e)}>
 
-                <div className="scrolling-list-small">
+                            <input 
 
-                    {
-
-                        ticketInfo.ticketMembers.map((username, index) => {
-
-                            const teamMembers = [...props.teamInfo.members];
-
-                            const currentMember = teamMembers.find(obj => 
+                                type="text" 
+                                placeholder="New Comment" 
+                                onChange={e => setComment(e.target.value)}
                                 
-                                obj.username === username
-                                
-                            );
+                            />
 
-                            return (
+                            
 
-                                <div key={index}>
+                            <Button variant="primary" type="submit">Submit</Button>
+
+                        </form>
+
+                        <div id="comment-alert"></div>
+
+                    </div>
+
+                    <br />
+
+                    <div>
+
+                    <h5>Teammates On Ticket:</h5>
+
+                    <div className="scrolling-list-small" style={{height: '100px'}}>
+
+                        {
+
+                            ticketInfo.ticketMembers.map((username, index) => {
+
+                                const teamMembers = [...props.teamInfo.members];
+
+                                const currentMember = teamMembers.find(obj => 
                                     
-                                    {currentMember.firstName} {currentMember.lastName} ({currentMember.role})
+                                    obj.username === username
                                     
-                                </div>
+                                );
 
-                            );
+                                return (
 
-                        })
+                                    <div key={index}>
+                                        
+                                        {currentMember.firstName} {currentMember.lastName} ({currentMember.role})
+                                        
+                                    </div>
 
-                    }
+                                );
+
+                            })
+
+                        }
+
+                    </div>
+
+                </div>
 
                 </div>
 

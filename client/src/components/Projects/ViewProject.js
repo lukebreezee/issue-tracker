@@ -1,10 +1,26 @@
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText } from 'mdb-react-ui-kit';
+import Button from 'react-bootstrap/Button';
 
 const ViewProjectComponent = props => {
 
     let history = useHistory();
+
+    if (!props.userInfo.username) {
+
+        history.push('/login');
+        return null;
+
+    }
+
+    if (!props.userInfo.teamUsername) {
+
+        history.push('/team-login');
+        return null;
+
+    }
 
     if (!props.currentProject) {
 
@@ -33,11 +49,17 @@ const ViewProjectComponent = props => {
 
             <div>
 
-                <button onClick={() => history.push('/new-ticket')}>
+                <Button 
+                
+                    onClick={() => history.push('/new-ticket')} 
+                    variant="primary"
+                    style={{width: '100%'}}
+                    
+                >
                     
                     New Ticket
                     
-                </button>
+                </Button>
 
             </div>
 
@@ -59,112 +81,149 @@ const ViewProjectComponent = props => {
 
     return (
 
-        <div className="main-page-parent">
+        <div>
 
-            <div>
-            
-                <div>Details:</div>
+            <h3>{projectInfo.projectName}</h3>
 
-                <div>Name: {projectInfo.projectName}</div>
+            <br />
 
-                <div>Date Created: {projectInfo.date}</div>
-
-                <div> 
-                    
-                    Creator: {creatorInfo.firstName} {creatorInfo.lastName} ({creatorInfo.role})
-                    
-                </div>
-
-                <div>Priority: {projectInfo.priority}</div>
-
-                <br />
-
-                <div>Description: {projectInfo.description}</div>
-
-                <br />
-
-                <div>Teammates On Project:</div>
-
-                <div className="scrolling-list">
-
-                    {
-
-                        projectInfo.selectedMembers.map((username, index) => {
-
-                            const teamMembers = [...props.teamInfo.members];
-
-                            const currentMember = teamMembers.find(obj => 
-                                
-                                obj.username === username
-                                
-                            );
-
-                            return (
-
-                                <div key={index}>
-                                    
-                                    {currentMember.firstName} {currentMember.lastName} ({currentMember.role})
-                                    
-                                </div>
-
-                            );
-
-                        })
-
-                    }
-
-                </div>
-
-                </div>
+            <div className="main-page-parent">
 
                 <div>
 
-                <div>Tickets For This Project:</div>
+                    {/*
+                        
+                        Below is derived from react-bootstrap docs:
+                    
+                        https://mdbootstrap.com/docs/b5/react/components/cards/ 
+                        
+                    */}
 
-                <div className="scrolling-list">
+                    <MDBCard >
 
-                    {
-
-                        props.teamInfo.tickets.map((obj, index) => {
-
-                            if (obj.projectName === projectInfo.projectName) {
-
-                                return (
+                        <MDBCardBody 
+                        
+                            style={{
                                 
-                                    <div 
+                                borderStyle: 'solid', 
+                                borderColor: '#CCCCCC', 
+                                borderWidth: '2px',
+                                boxShadow: '1px 1px 5px #CCCCCC'
+                                
+                            }}>
 
-                                        key={index}
-                                        onClick={() => handleClick(obj.ticketName)}
-                                        
-                                    >
-                                        {obj.ticketName}
-                                        
-                                    </div>
+                            <MDBCardTitle>Details</MDBCardTitle>
+
+                            <MDBCardText>
+                                
+                                <ul className="card-ul">
+
+                                    <li>Date Created: {projectInfo.date.slice(4, 15)}</li>
+
+                                    <li>Creator: {creatorInfo.firstName} {creatorInfo.lastName}</li>
+
+                                    <li>Priority: {projectInfo.priority}</li>
+
+                                </ul>
+                                
+                            </MDBCardText>
+
+                        </MDBCardBody>
+
+                    </MDBCard>
+
+                    <br />
+
+                    <h6>Teammates On Project:</h6>
+
+                    <div className="scrolling-list-small" style={{height: '100px'}}>
+
+                        {
+
+                            projectInfo.selectedMembers.map((username, index) => {
+
+                                const teamMembers = [...props.teamInfo.members];
+
+                                const currentMember = teamMembers.find(obj => 
+                                    
+                                    obj.username === username
                                     
                                 );
 
-                            } else {
+                                return (
 
-                                return null;
+                                    <div key={index}>
+                                        
+                                        {currentMember.firstName} {currentMember.lastName} ({currentMember.role})
+                                        
+                                    </div>
 
-                            }
+                                );
 
-                        })
+                            })
+
+                        }
+
+                    </div>
+
+                    </div>
+
+                    <div>
+
+                    <h6>Tickets For This Project:</h6>
+
+                    <div className="scrolling-list-small" style={{height: '120px'}}>
+
+                        {
+
+                            props.teamInfo.tickets.map((obj, index) => {
+
+                                if (obj.projectName === projectInfo.projectName) {
+
+                                    return (
+                                    
+                                        <div 
+
+                                            key={index}
+                                            onClick={() => handleClick(obj.ticketName)}
+                                            
+                                        >
+                                            {obj.ticketName}
+                                            
+                                        </div>
+                                        
+                                    );
+
+                                } else {
+
+                                    return null;
+
+                                }
+
+                            })
+
+                        }
+
+                    </div>
+
+                    <br />
+
+                    {
+
+                        newTicket
 
                     }
 
+                    <br />
+
+                    <h6>Description:</h6>
+
+                    <div style={{maxWidth: '300px'}}>{projectInfo.description}</div>
+
                 </div>
-
                 
-
-                {
-
-                    newTicket
-
-                }
-
             </div>
-            
+
         </div>
 
     );

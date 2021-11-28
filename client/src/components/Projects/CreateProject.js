@@ -16,7 +16,23 @@ const CreateProjectComponent = props => {
 
     const [selectedMembers, setSelectedMembers] = useState([]);
 
+    // const [render, setRender] = useState(null);
+
     let history = useHistory();
+
+    if (!props.userInfo.username) {
+
+        history.push('/login');
+        return null;
+
+    }
+
+    if (!props.userInfo.teamUsername) {
+
+        history.push('/team-login');
+        return null;
+
+    }
 
     const handleSubmit = event => {
 
@@ -34,6 +50,7 @@ const CreateProjectComponent = props => {
         if (selectedMembers.length === 0) {
 
             alert.innerHTML = 'At least one member must be selected';
+
             return;
 
         }
@@ -110,109 +127,125 @@ const CreateProjectComponent = props => {
         }
 
     };
-
+        
     return (
+        
+        <div>
 
-        <div className="main-page-parent">
+        <h3>New Project</h3>
 
-            <form 
+        <br />
 
-                onSubmit={e => handleSubmit(e)}
-                className="main-page-parent"
+            <div className="main-page-parent">
 
-            >
+                <form 
 
-                <div>
+                    onSubmit={e => handleSubmit(e)}
+                    className="main-page-parent"
 
-                    <input
+                >
 
-                        type="text" 
-                        placeholder="Project Name" 
-                        onChange={e => setProjectName(e.target.value)}
-                        required
+                    <div>
 
-                    />
+                        <input
 
-                    <br />
+                            type="text" 
+                            placeholder="Project Name" 
+                            onChange={e => setProjectName(e.target.value)}
+                            style={{width: '100%'}}
+                            required
 
-                    <br />
+                        />
 
-                    <div>Members:</div>
+                        <br />
 
-                    <div id="create-project-alert"></div>
+                        <br />
 
-                    <div className="scrolling-list">
+                        <div>Members You Want On The Project:</div>
 
-                        {
+                        <div id="create-project-alert"></div>
 
-                            props.teamInfo.members.map((obj, index) => {
+                        <div className="scrolling-list-small">
 
-                                if (obj.username === props.userInfo.username) {
+                            {
 
-                                    return null;
-                                    
-                                }
+                                props.teamInfo.members.map((obj, index) => {
 
-                                return (
+                                    if (obj.username === props.userInfo.username) {
 
-                                    <div 
+                                        return null;
+                                        
+                                    }
 
-                                        onClick={e => handleClick(e, obj.username)}
-                                        username={obj.username}
-                                        key={index}
+                                    return (
 
-                                    >
+                                        <div 
 
-                                        {obj.firstName} {obj.lastName} ({obj.role})
+                                            onClick={e => handleClick(e, obj.username)}
+                                            username={obj.username}
+                                            key={index}
 
-                                    </div>
+                                        >
 
-                                );
+                                            {obj.firstName} {obj.lastName} ({obj.role})
 
-                            })
+                                        </div>
 
-                        }
+                                    );
+
+                                })
+
+                            }
+
+                        </div>
 
                     </div>
 
-                </div>
+                    <div>
 
-                <div>
+                        <textarea 
 
-                    <input 
+                            className="description"
+                            onChange={e => setDescription(e.target.value)}
+                            placeholder="Description (Optional)"
+                            wrap="soft"
 
-                        type="text" 
-                        className="description"
-                        onChange={e => setDescription(e.target.value)}
-                        placeholder="Description (Optional)"
+                        />
 
-                    />
+                        <br />
 
-                    <br />
+                        <br />
 
-                    <br />
+                        <select 
+                        
+                            onChange={e => setPriority(e.target.value)}
+                            style={{width: '100%'}}
+                            
+                        >
 
-                    <select onChange={e => setPriority(e.target.value)}>
+                            <option>Priority</option>
 
-                        <option>Priority</option>
+                            <option>High</option>
 
-                        <option>High</option>
+                            <option>Medium</option>
 
-                        <option>Medium</option>
+                            <option>Low</option>
 
-                        <option>Low</option>
+                        </select>
 
-                    </select>
+                        <br />
 
-                    <br />
+                        <br />
 
-                    <br />
+                        <br />
 
-                    <Button type="submit">Create</Button>
+                        <Button type="submit" style={{width: '100%'}}>Create</Button>
 
-                </div>
+                    </div>
 
-            </form>
+                </form>
+
+            </div>
 
         </div>
 
