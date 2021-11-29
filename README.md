@@ -10,12 +10,19 @@ Technologies Used:
 Description:
 
   An all-purpose issue tracker/bug tracker for developers, project managers, and administrators.
+  
   Once a user creates an account, they are prompted to either log into or create a team. These teams are
+  
   made up of members and each member is has one of three roles - as mentioned before, the roles are
+  
   dev, project manager, and admin (in ascending order of capability). Admins and PMs can create projects
+  
   and assign these projects to developers and other admins/PMs. A project in this case is essentially
+  
   a collection of tickets, or problems that occur within the project. These tickets can be assigned to any
+  
   user who is assigned to the project. Only the creator of the project can create a ticket. Tickets start
+  
   out with a status of 'Not Started' and can be changed to 'In Progress' or 'Finished' at any time.
   
 Features:
