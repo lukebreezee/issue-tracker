@@ -5,7 +5,7 @@ Technologies Used:
   - React & Redux
   - Node.js & Express
   - MongoDB & Mongoose
-  - JavaScript, not TypeScript (If I could do it over, I would probably use TypeScript)
+  - JavaScript (If I could do it over, I would probably use TypeScript)
 
 Description:
 
