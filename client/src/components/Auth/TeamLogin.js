@@ -3,12 +3,17 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 import { useState, useEffect } from 'react';
+import { MDBCard, MDBCardBody, MDBCardTitle } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
 const TeamLoginComponent = props => {
 
+    // useHistory allows client redirect
+
     let history = useHistory();
+
+    // If user has team username, redirect to project page
 
     useEffect(() => {
 
@@ -20,16 +25,27 @@ const TeamLoginComponent = props => {
 
     }, [props, history]);
 
+    // State is set on input change
+
     const [username, setUsername] = useState('');
+
     const [password, setPassword] = useState('');
 
+    // Function called on form submit
+
     const handleSubmit = event => {
+
+        // Prevent page refresh
     
         event.preventDefault();
+
+        // Message displayed to user if problem occurs
 
         let alert = document.getElementById('team-login-status');
 
         alert.innerHTML = 'Loading...';
+
+        // Query back-end to fetch team info
 
         axios.post('http://localhost:5000/team-login', {
 
@@ -39,19 +55,31 @@ const TeamLoginComponent = props => {
             firstName: props.userInfo.firstName,
             lastName: props.userInfo.lastName
 
-        }).then(res => {
+        })
+        
+        .then(res => {
+
+            // If no message, fetch was successful, so we update team info
 
             if (res.data.message === undefined) {
 
+                // Send team info to redux store
+
                 props.teamInfoUpdate(res.data);
 
-                axios.put('http://localhost:5000/update-user', {
+                // Update user info in database to assign the team username
+
+                axios.post('http://localhost:5000/update-user', {
 
                     key: 'teamUsername',
                     updateValue: username,
                     username: props.userInfo.username
 
-                }).then(res => {
+                })
+                
+                .then(res => {
+
+                    // If there is a message, there is an error
 
                     if (res.data.message) {
 
@@ -59,13 +87,19 @@ const TeamLoginComponent = props => {
 
                     } else {
 
+                        // Else, userInfo object gets a team username in redux
+
                         props.teamLogIn(res.data.teamUsername);
+
+                        // Redirect to projects page
 
                         history.push('/projects-admin-pm');
 
                     }
 
-                }).catch(() => {
+                })
+                
+                .catch(() => {
 
                     alert.innerHTML = 'An unexpected error has occured';
 
@@ -77,7 +111,9 @@ const TeamLoginComponent = props => {
 
             }
 
-        }).catch(() => {
+        })
+        
+        .catch(() => {
 
             alert.innerHTML = 'An unexpected error has occured';
 
@@ -94,27 +130,55 @@ const TeamLoginComponent = props => {
 
                     <form className="spaced-form" onSubmit={e => handleSubmit(e)}>
 
-                        <div>Please enter your team's ID and password</div>
+                        <div id="team-login-status" className="alert" />
 
-                        <p id="team-login-status"></p>
+                        <MDBCard>
 
-                        <input 
-                            type="text" 
-                            name="username" 
-                            placeholder="Team ID"
-                            onChange={e => setUsername(e.target.value)}
-                            required 
-                        />
+                            <MDBCardBody
 
-                        <input 
-                            type="password" 
-                            name="password" 
-                            placeholder="Password"
-                            onChange={e => setPassword(e.target.value)}
-                            required 
-                        />
+                                style={{
+                                        
+                                    borderStyle: 'solid', 
+                                    borderColor: '#CCCCCC', 
+                                    borderWidth: '2px',
+                                    boxShadow: '1px 1px 5px #CCCCCC'
+                                    
+                                }}
 
-                        <Button type="submit" variant="primary">Submit</Button>
+                            >
+
+                                <MDBCardTitle>Team Login</MDBCardTitle>
+
+                                <div className="change-auth-form">
+
+                                    <input 
+
+                                        type="text" 
+                                        name="username" 
+                                        placeholder="Team ID"
+                                        onChange={e => setUsername(e.target.value)}
+                                        spellCheck="false"
+                                        required 
+
+                                    />
+
+                                    <input 
+
+                                        type="password" 
+                                        name="password" 
+                                        placeholder="Password"
+                                        onChange={e => setPassword(e.target.value)}
+                                        required 
+
+                                    />
+
+                                    <Button type="submit" variant="primary">Submit</Button>
+
+                                </div>
+
+                            </MDBCardBody>
+
+                        </MDBCard>
 
                     </form>
 
@@ -130,6 +194,8 @@ const TeamLoginComponent = props => {
 
     );
 }
+
+// Connect our component to the store and export it
 
 const TeamLogin = connect(mapCredentials, mapDispatch)(TeamLoginComponent);
 

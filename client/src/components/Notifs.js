@@ -1,29 +1,57 @@
-import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { mapCredentials } from '../redux/mapToProps';
+import { mapCredentials, mapDispatch } from '../redux/mapToProps';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const NotifsComponent = props => {
 
+    // useHistory simplifies client redirect
+
     let history = useHistory();
 
+    // If no username in store, user is not logged in
 
-        if (!props.userInfo.username) {
-            
-            history.push('/login');
-
-            return null;
+    if (!props.userInfo.username) {
         
+        history.push('/login');
+
+        return null;
+    
+    }
+
+    // If no team username in store, user does not have a team
+
+    if (!props.userInfo.teamUsername) {
+        
+        history.push('/team-login');
+
+        return null;
+    
+    }
+
+    // Fetch user info from server to update notif list
+
+    axios.get('http://localhost:5000/get-user-info', {
+
+        headers: {
+
+            username: props.userInfo.username
+
         }
 
-        if (!props.userInfo.teamUsername) {
-            
-            history.push('/team-login');
+    })
+    
+    .then(res => {
 
-            return null;
-        
-        }
+        // Error handling
 
+        if (res.message) return;
+
+        // If no error, load user data
+
+        props.userLogIn(res.data);
+
+    });
     
     return (
 
@@ -33,11 +61,13 @@ const NotifsComponent = props => {
 
             {
 
-                props.userInfo.notifications.slice(0).reverse().map(elem => {
+                // List notifications in order from newest to oldest
+
+                props.userInfo.notifications.slice(0).reverse().map((elem, index) => {
 
                     return (
 
-                        <div>
+                        <div key={index}>
 
                             <hr />
                     
@@ -57,6 +87,8 @@ const NotifsComponent = props => {
 
 };
 
-const Notifs = connect(mapCredentials)(NotifsComponent);
+// Connect component to redux and export
+
+const Notifs = connect(mapCredentials, mapDispatch)(NotifsComponent);
 
 export { Notifs };

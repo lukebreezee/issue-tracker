@@ -9,17 +9,27 @@ import axios from 'axios';
 
 const ChangePasswordComponent = props => {
 
+    //State gets updated on input change
+
     const [currentPassword, setCurrentPassword] = useState('');
 
     const [newPassword, setNewPassword] = useState('');
 
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
+    // Use history hook to redirect the user when needed
+
     let history = useHistory();
+
+    //Function called on form submit
 
     const handleSubmit = event => {
 
+        //Prevent page from refreshing
+
         event.preventDefault();
+
+        //Message displayed to user if something goes wrong
 
         let alert = document.getElementById('change-password-alert');
 
@@ -33,11 +43,17 @@ const ChangePasswordComponent = props => {
 
         }
 
+        //Helper function that ensures the password is secure. See helpers.js in src
+
         alert.innerHTML = checkPassword(newPassword);
+
+        //If blank, password is OK
 
         if (alert.innerHTML !== '') return;
 
         alert.innerHTML = 'Loading...';
+
+        //Query the database to update the password
 
         axios.post('http://localhost:5000/update-user/password', {
 
@@ -49,7 +65,7 @@ const ChangePasswordComponent = props => {
         
         .then(res => {
 
-            console.log(res);
+            //If res.data.message is truthy, it is an error message
 
             if (res.data.message) {
 
@@ -59,7 +75,11 @@ const ChangePasswordComponent = props => {
 
             }
 
+            //Send user info to redux store
+
             props.userLogIn(res.data);
+
+            //Redirect to the members page
 
             history.push('/members-admin');
 
@@ -127,13 +147,21 @@ const ChangePasswordComponent = props => {
 
             <br />
 
-            <div id="change-password-alert" style={{ color: '#AA0000' }}></div>
+            <div 
+            
+                id="change-password-alert" 
+                style={{ color: '#AA0000' }}
+                className="alert"
+                
+            />
 
         </div>
 
     );
 
 };
+
+//Connect our component to the redux store and export
 
 const ChangePassword = connect(mapCredentials, mapDispatch)(ChangePasswordComponent);
 

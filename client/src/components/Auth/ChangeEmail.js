@@ -9,21 +9,35 @@ import { useHistory } from 'react-router-dom';
 
 const ChangeEmailComponent = props => {
 
+    //Credentials that will be updated on input change
+
     const [password, setPassword] = useState('');
 
     const [newUsername, setNewUsername] = useState('');
 
+    //Use history to redirect the user if needed
+
     let history = useHistory();
+
+    //Handles the submission of the change email form
 
     const handleSubmit = event => {
 
+        //Prevent the page from reloading on submit
+
         event.preventDefault();
 
+        //Alert message for the outcome
+
         let alert = document.getElementById('change-email-alert');
+
+        //Set the alert's color to red, show a message
 
         alert.style.color = '#AA0000';
 
         alert.innerHTML = 'Loading...';
+
+        //Check the format of the email, if not correct format it is invalid
 
         if (!checkEmail(newUsername)) {
 
@@ -32,6 +46,8 @@ const ChangeEmailComponent = props => {
             return;
 
         }
+
+        //Query the database to change the email
 
         axios.post('http://localhost:5000/update-user/email', {
 
@@ -43,6 +59,8 @@ const ChangeEmailComponent = props => {
         
         .then(res => {
 
+            //If res.data.message is truthy, it is an error message
+
             if (res.data.message) {
 
                 alert.innerHTML = res.data.message;
@@ -51,13 +69,21 @@ const ChangeEmailComponent = props => {
 
             }
 
+            //Send user info to redux store
+
             props.userLogIn(res.data.userInfo);
 
+            //Send team info to redux store
+
             props.teamInfoUpdate(res.data.teamInfo);
+
+            //Show the user that it was a success
 
             alert.style.color = '#00AA00';
 
             alert.innerHTML = 'Success';
+
+            //After message is displayed, go back to the members page after 1/2 second
 
             setTimeout(() => {
 
@@ -106,6 +132,7 @@ const ChangeEmailComponent = props => {
                             type="text" 
                             placeholder="New Email"
                             onChange={e => setNewUsername(e.target.value)}
+                            spellCheck="false"
                             required
                             
                         />
@@ -120,13 +147,21 @@ const ChangeEmailComponent = props => {
 
             <br />
 
-            <div id="change-email-alert" style={{ color: '#AA0000' }}></div>
+            <div 
+                
+                id="change-email-alert" 
+                style={{ color: '#AA0000' }}
+                className="alert"
+                
+            />
 
         </div>
 
     );
 
 };
+
+//Connecting the component to redux and then we export
 
 const ChangeEmail = connect(mapCredentials, mapDispatch)(ChangeEmailComponent);
 

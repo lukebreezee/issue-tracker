@@ -5,25 +5,63 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 
+// Allows user to edit their account credentials
+
 const AccountComponent = props => {
 
+    // State field that renders a button when the user's
+
+    // first name input or last name input is different 
+
+    // from their values in redux store
+
     const [UpdateButton, setUpdateButton] = useState(null);
+
+    // Below variables are not state properties because 
+
+    // they do not update right away when outside of a form,
+
+    // but they are set the same way on input change.
 
     let firstName = props.userInfo.firstName;
 
     let lastName = props.userInfo.lastName;
 
+    // useHistory simplifies client redirect
+
     let history = useHistory();
+
+    // Function called when log out button is clicked
 
     const handleLogOut = () => {
 
+        // If user is in demo mode, revert data back to what it was
+
+        if (props.teamInfo.username === 'demo-team') {
+
+            axios.delete('http://localhost:5000/demo-delete');
+
+        }
+
+        // Clears userInfo and teamInfo objects in redux store
+
         props.userLogOut();
+
+        // Redirect to the login page
 
         history.push('/login');
 
     };
 
+    // Function called when leave team button is clicked
+
     const handleTeamLogOut = async () => {
+
+        // If user is in demo mode, prevent team leave
+
+        if (props.teamInfo.username === 'demo-team') return;
+
+        // Deleting user's member object from their team
 
         await axios.post('http://localhost:5000/delete-member', {
 
@@ -32,7 +70,9 @@ const AccountComponent = props => {
 
         });
 
-        axios.put('http://localhost:5000/update-user', {
+        // Making the user's team value null so that they can join a new team
+
+        axios.post('http://localhost:5000/update-user', {
 
             username: props.userInfo.username,
             key: 'teamUsername',
@@ -40,13 +80,41 @@ const AccountComponent = props => {
 
         });
 
+        // Clear team info from redux store
+
         props.teamLogOut();
+
+        // Redirect user
 
         history.push('/team-login');
 
     }
 
+    // Called when user decides to change first or last name
+
     const updateUserInfo = () => {
+
+        // If user is in demo mode, prevent update
+
+        if (props.teamInfo.username === 'demo-team') return;
+
+        // Message displayed to user showing outcome
+
+        let alert = document.getElementById('update-user-names-alert');
+
+        alert.style.color = '#AA0000';
+
+        // Prompt user if either name is blank
+
+        if (!firstName || !lastName) {
+
+            alert.innerHTML = 'Names cannot be blank';
+
+            return;
+
+        }
+
+        // Make post request to back-end to update first/last name of user
 
         axios.post('http://localhost:5000/update-user/names', {
 
@@ -59,11 +127,9 @@ const AccountComponent = props => {
         
         .then(res => {
 
-            let alert = document.getElementById('update-user-names-alert');
+            // If message, something is wrong, so we display to user
 
             if (res.message) {
-
-                alert.style.color = '#AA0000';
 
                 alert.innerHTML = res.message;
 
@@ -71,15 +137,25 @@ const AccountComponent = props => {
 
             }
 
+            // Else, post was successful, so we turn the text
+
+            // green and alert user
+
             alert.style.color = '#00AA00';
 
             alert.innerHTML = 'Success';
+
+            // Then we update redux with new user info
 
             props.userLogIn(res.data);
 
         });
 
     };
+
+    // JSX appears if first or last name is different from
+
+    // values in redux store
 
     const UpdateButtonComponent = (
 
@@ -101,17 +177,27 @@ const AccountComponent = props => {
 
             <br />
 
-            <div id="update-user-names-alert"></div>
+            <div id="update-user-names-alert" style={{maxWidth: 'fit-content'}}></div>
 
         </div>
 
     );
 
+    // Called when user changes value of first/last name inputs
+
     const handleInfoChange = event => {
+
+        // Case for first name change
 
         if (event.target.name === 'firstName') {
 
+            // Set previously declared variable
+
             firstName = event.target.value;
+
+            // If input value is different from username in redux,
+
+            // render update button
 
             if (event.target.value !== props.userInfo.firstName) {
 
@@ -133,7 +219,13 @@ const AccountComponent = props => {
 
         if (event.target.name === 'lastName') {
 
+            // Set previously declared variable
+
             lastName = event.target.value;
+
+            // If input value is not the same as last name in
+
+            // redux, render update button
 
             if (event.target.value !== props.userInfo.lastName) {
 
@@ -153,6 +245,8 @@ const AccountComponent = props => {
 
         }
 
+        // Else, update button does not render
+
         setUpdateButton(null);
 
     }
@@ -171,7 +265,7 @@ const AccountComponent = props => {
 
                     <div>
 
-                        <label for="firstName"><strong>First Name:</strong></label>
+                        <label htmlFor="firstName"><strong>First Name:</strong></label>
 
                         <br />
 
@@ -188,7 +282,7 @@ const AccountComponent = props => {
 
                         <div style={{height: '15px'}}></div>
 
-                        <label for="lastName"><strong>Last Name:</strong></label>
+                        <label htmlFor="lastName"><strong>Last Name:</strong></label>
 
                         <br />
 
@@ -253,6 +347,8 @@ const AccountComponent = props => {
     );
 
 };
+
+// Connect component to redux and export
 
 const Account = connect(mapCredentials, mapDispatch)(AccountComponent);
 

@@ -2,15 +2,29 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 
+// Displays all tickets that the team has created
+
+// Only available to admin and PM
+
 const AllTicketsComponent = props => {
+
+    // useHistory simplifies client redirect
 
     let history = useHistory();
 
+    // Function called when user clicks on a ticket
+
     const handleClick = (projectName, ticketName) => {
+
+        // Update current project in redux store
 
         props.currentProjectUpdate(projectName);
 
+        // Update current ticket in redux store
+
         props.currentTicketUpdate(ticketName);
+
+        // Redirect user
 
         history.push('/view-ticket');
 
@@ -39,6 +53,8 @@ const AllTicketsComponent = props => {
             <div className="scrolling-list-medium">
             
                 {
+
+                    // Displays info for all tickets on the team
 
                     props.teamInfo.tickets.map((obj, index) => {                        
 
@@ -77,6 +93,8 @@ const AllTicketsComponent = props => {
     );
 
 };
+
+// Connect component to redux and export
 
 const AllTickets = connect(mapCredentials, mapDispatch)(AllTicketsComponent);
 

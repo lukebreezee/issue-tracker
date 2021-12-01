@@ -1,17 +1,31 @@
 import axios from 'axios';
 import { store } from './redux/store';
 
+// Checks strength of password
+
 const checkPassword = password => {
+
+    // Checks password length
 
     if (password.length < 10 || password.length > 25) {
 
         return 'Password must be 10-25 characters';
+
     }
 
+    // Regular expressions for testing
+
     const capitalRegex = /[A-Z]/;
+
     const specialRegex = /[@#$%^&*<>?,.]/;
 
+    // All vars are false until proven true
+
     let hasCapital, hasSpecial, hasNumber = false;
+
+    // Iterate through each character - check for capital
+
+    // letters, special characters, and numbers. The password must have one of each.
     
     for (let i = 0; i < password.length; i++) {
 
@@ -30,6 +44,10 @@ const checkPassword = password => {
 
     }
 
+    // Now we check our vars and return different messages based on
+
+    // the outcome.
+
     if (!hasCapital) {
 
         return 'Password must contain a capital letter.'
@@ -47,24 +65,38 @@ const checkPassword = password => {
         return '';
 
     }
+
 };
 
 //This function is copied from https://ui.dev/validate-email-address-javascript/
+
+// It uses a very complicated regex that I thankfully did not need to come up with myself
+
+// It looks cool though. And it works which is always a plus
+
 const checkEmail = email => {
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 };
 
+// This function returns a promise based on the outcome of a fetch
+
+// from the server.
+
 const getTeamInfo = () => {
 
     return new Promise ((resolve, reject) => {
+
+        // If user is not logged in, this error will be caught
 
         if (!store.getState().root.userInfo.username) {
 
             return reject({ message: 'User not logged in' });
     
         }
+
+        // Making a post request to the server
     
         axios.post('http://localhost:5000/get-team-info', {
     
@@ -73,14 +105,22 @@ const getTeamInfo = () => {
         })
 
         .then(res => {
+
+            // Dispatch info to the store to be used
     
             store.dispatch({type: 'TEAM INFO UPDATE', teamObj: res.data});
+
+            // If all goes well, this code will execute and team info
+
+            // will show up as the .then() method's parameter
 
             return resolve(res.data);
     
         })
 
         .catch(() => {
+
+            // If there is an unexpected error, catch it
     
             return reject('An unexpected error has occured');
     
@@ -90,16 +130,23 @@ const getTeamInfo = () => {
 
 };
 
+// Posts to the database to update user properties
+
 const updateUser = (key, updateValue, username) => {
 
-    axios.put('http://localhost:5000/update-user', {
+    // We make our request
+
+    axios.post('http://localhost:5000/update-user', {
 
         key,
         updateValue,
         username
 
     })
+
     .then(res => {
+
+        // If message, something went wrong
 
         if (res.data.message) {
 
@@ -107,7 +154,10 @@ const updateUser = (key, updateValue, username) => {
 
         } else {
 
+            // Else, it was a success, so we update our user
+
             store.dispatch({type: 'USER LOGIN', userObj: res.data});
+
             return 'Success';
 
         }
@@ -116,15 +166,25 @@ const updateUser = (key, updateValue, username) => {
 
 };
 
+// Makes post request to server to update selected users' notifs list
+
 const sendNotification = params => {
+
+    // Variable to be conditionally rendered (notification text)
 
     let notification;
 
+    // Get user's credentials
+
     const userInfo = store.getState().root.userInfo;
+
+    // Shorthands for readability and simplicity
 
     const first = userInfo.firstName;
 
     const last = userInfo.lastName;
+
+    // Filter the notification type to render the notification body
 
     switch(params.type) {
 
@@ -164,6 +224,8 @@ const sendNotification = params => {
 
     }
 
+    // Then we send our notification out to the selected users
+
     axios.post('http://localhost:5000/send-notification', {
 
         teamUsername: userInfo.teamUsername,
@@ -174,7 +236,7 @@ const sendNotification = params => {
 
 };
 
-
+// Exporting functions
 
 export { 
     

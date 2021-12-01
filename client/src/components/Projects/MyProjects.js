@@ -6,11 +6,23 @@ import { useState, useEffect } from 'react';
 
 const MyProjectsComponent = props => {
 
+    // useHistory simplifies component redirect
+
     let history = useHistory();
+
+    // Filter through team's projects to find the ones that
+
+    // the user is associated with
 
     const userProjects = props.teamInfo.projects.filter(obj => {
 
+        // Make a copy of the assigned members list
+
         const members = [...obj.selectedMembers];
+
+        // If user's username is in the list, the project 
+
+        // will be pushed to userProjects
 
         if (members.indexOf(props.userInfo.username) !== -1) {
 
@@ -18,21 +30,31 @@ const MyProjectsComponent = props => {
 
         }
 
+        // And the same goes if the user is the creator of the project
+
         if (obj.creator === props.userInfo.username) return true;
+
+        // Else, return false and do not push
 
         return false;
 
     });
 
-    const handleClick = projectName => {
+    // If user clicks on one of the projects, the name gets dispatched to redux
 
-        console.log(projectName);
+    // and the user is redirected.
+
+    const handleClick = projectName => {
 
         props.currentProjectUpdate(projectName);
 
         history.push('/view-project')
 
     };
+
+    // If the user is a PM or an admin, the create project button will appear
+
+    // (Passed in as a prop)
 
     let CreateProjectButton;
 
@@ -54,6 +76,8 @@ const MyProjectsComponent = props => {
 
     }
 
+    // Gets the creator's info and returns their first and last name
+
     const findCreatorName = creatorUsername => {
 
         const creatorInfo = 
@@ -63,6 +87,16 @@ const MyProjectsComponent = props => {
         return `${creatorInfo.firstName} ${creatorInfo.lastName}`;
 
     };
+
+    // It was simpler to make tickets and projects relational as opposed to
+
+    // storing a 'tickets' array inside of project objects, so this 
+
+    // functions iterates through the ticket list and finds the ones that are
+
+    // associated with the project at hand. This function returns the # of tickets
+
+    // that a specific project has.
 
     const findTicketCount = projectName => {
 
@@ -79,6 +113,8 @@ const MyProjectsComponent = props => {
         }, 0);
 
     };
+
+    // Markup is different on mobile, this markup is for non-mobile
 
     const MyProjectsDefaultMarkup = (
 
@@ -105,6 +141,10 @@ const MyProjectsComponent = props => {
             <div className="scrolling-list-medium" id="my-projects-list">
             
                 {
+
+                    // Iterate through projects that the user is associated with
+
+                    // and display certain information
     
                     userProjects.map((obj, index) => {           
     
@@ -144,13 +184,15 @@ const MyProjectsComponent = props => {
     
             {
     
-                CreateProjectButton
+                CreateProjectButton // Conditionally rendered
     
             }
     
         </div>
     
     );
+
+    // Markup for mobile device or any screen width less than 700px
 
     const MyProjectsPhoneMarkup = (
 
@@ -161,6 +203,10 @@ const MyProjectsComponent = props => {
             <div className="scrolling-list-medium" id="my-projects-list">
             
                 {
+
+                    // Iterate through project list, but this time only display the
+
+                    // name to save screen space
     
                     userProjects.map((obj, index) => {           
     
@@ -190,7 +236,7 @@ const MyProjectsComponent = props => {
     
             {
     
-                CreateProjectButton
+                CreateProjectButton // Conditionally rendered
     
             }
     
@@ -198,7 +244,11 @@ const MyProjectsComponent = props => {
 
     );
 
+    // State updates markup depending on screen size
+
     const [render, setRender] = useState(MyProjectsDefaultMarkup);
+
+    // Replicates componentDidMount, shows mobile markup if screen width is < 700px
 
     useEffect(() => {
 
@@ -212,7 +262,10 @@ const MyProjectsComponent = props => {
         
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // If user resizes page to < 700px wide, display phone markup
 
     window.addEventListener('resize', () => {
 
@@ -227,10 +280,14 @@ const MyProjectsComponent = props => {
         setRender(MyProjectsPhoneMarkup);
 
     });
+
+    //  State field
     
     return render;
 
 };
+
+// Component gets connected to redux and exported
 
 const MyProjects = connect(mapCredentials, mapDispatch)(MyProjectsComponent);
 

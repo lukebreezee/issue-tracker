@@ -1,10 +1,16 @@
-import { connect } from 'react-redux';
-import { mapCredentials } from '../redux/mapToProps';
 import { useHistory } from 'react-router-dom';
 
-const DashboardComponent = props => {
+// This component acts as the homepage; it redirects to
+
+// the projects page
+
+const Dashboard = () => {
+
+    // useHistory simplifies client redirect
     
     let history = useHistory();
+
+    // Redirect user
 
     history.push('/projects-admin-pm');
 
@@ -12,6 +18,6 @@ const DashboardComponent = props => {
 
 };
 
-const Dashboard = connect(mapCredentials)(DashboardComponent);
+// Export the component for connection with the router
 
 export { Dashboard };

@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import { mapCredentials } from '../../redux/mapToProps';
 
+// This component is displayed on members page; shows members, roles, and emails.
+
 const MemberListComponent = props => {
 
     return (
@@ -22,6 +24,8 @@ const MemberListComponent = props => {
             <div className="scrolling-list">
 
                 {
+
+                    // Iterate through members and display certain info
 
                     props.teamInfo.members.map((obj, index) => {
 

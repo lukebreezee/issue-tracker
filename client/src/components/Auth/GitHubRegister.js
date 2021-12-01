@@ -10,47 +10,77 @@ import { Octokit } from '@octokit/core';
 
 const GithubRegisterComponent = props => {
 
+    // User still needs to declare first/last name and username since the GitHub
+
+    // scope chosen does not provide that info. Inputs set state on change.
+
     const [firstName, setFirstName] = useState('');
 
     const [lastName, setLastName] = useState('');
 
     const [username, setUsername] = useState('');
 
+    // useParams hook gives us access to URL parameters
+
     const { accessToken } = useParams();
+
+    // useHistory allows us to redirect the user
 
     let history = useHistory();
 
+    // Function called on form submit
+
     const handleSubmit = async event => {
+
+        // Prevent page refresh
 
         event.preventDefault();
 
+        // Message showed to user on error
+
         let alert = document.getElementById('github-register-alert');
+
+        // Checking email using a regex, if invalid then prompt user
 
         if (!checkEmail(username)) {
 
             alert.innerHTML = 'Email is invalid';
+
             return;
 
         }
 
         let githubUsername;
 
+        // Octokit makes it easier to query GitHub's API
+
         const octokit = new Octokit({auth: accessToken});
+
+        // Query GitHub for user login
 
         await octokit.request('GET /user')
 
         .then(res => {
 
+            // If res.data.login is truthy, request was successful
+
+            // If falsy, something went wrong
+
             if (!res.data.login) {
 
                 alert.innerHTML = 'An unexpected error has occured';
+
                 return;
 
             }
 
+            // res.data.login is their username on GitHub
+
             githubUsername = res.data.login;
 
         });
+
+        // Query backend to register user
 
         axios.post('http://localhost:5000/oauth-client-register', {
 
@@ -64,16 +94,24 @@ const GithubRegisterComponent = props => {
             }
 
         })
+
         .then(res => {
+
+            // If res.data.message is truthy, something went wrong
 
             if (res.data.message) {
 
                 alert.innerHTML = res.data.message;
+
                 return;
 
             }
 
+            // Else, update user info from response
+
             props.userLogIn(res.data);
+
+            // Redirect user to team login page
 
             history.push('/team-login');
 
@@ -90,7 +128,7 @@ const GithubRegisterComponent = props => {
 
                 <div>Please enter the following</div>
 
-                <p id="github-register-alert"></p>
+                <div id="github-register-alert" className="alert" />
 
                 <br />
 
@@ -148,7 +186,11 @@ const GithubRegisterComponent = props => {
 
 };
 
+// Connect above component to redux
+
 const GithubRegisterConnected = connect(null, mapDispatch)(GithubRegisterComponent);
+
+// Parent component gives access to URL params and is exported
 
 const GithubRegister = () => {
 

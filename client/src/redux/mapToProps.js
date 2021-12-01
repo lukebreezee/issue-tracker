@@ -1,3 +1,8 @@
+
+// This function maps state to component props when a component
+
+// is connected to redux.
+
 const mapCredentials = state => {
 
     return {
@@ -6,11 +11,16 @@ const mapCredentials = state => {
         teamInfo: state.root.teamInfo,
         currentProject: state.root.currentProject,
         currentTicket: state.root.currentTicket,
-        googleInfo: state.root.googleInfo
+        googleInfo: state.root.googleInfo,
+        isDemo: state.root.isDemo
 
     }
 
 }
+
+// Maps dispatch functions to component props to make
+
+// state management easier
 
 const mapDispatch = dispatch => {
 
@@ -63,6 +73,7 @@ const mapDispatch = dispatch => {
             dispatch({type: 'GOOGLE INFO UPDATE', obj});
         
         }
+        
     };
 
 };

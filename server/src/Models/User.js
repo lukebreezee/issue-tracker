@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+// Declare schema for the user model
+
 const userSchema = new mongoose.Schema({
 
     firstName: String,
@@ -13,6 +15,10 @@ const userSchema = new mongoose.Schema({
     
 });
 
+// Then declaring the model itself
+
 const User = new mongoose.model('User', userSchema);
+
+// And then exporting the model to be used in routes, etc
 
 module.exports = User;

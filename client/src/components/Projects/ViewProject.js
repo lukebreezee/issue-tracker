@@ -6,28 +6,45 @@ import Button from 'react-bootstrap/Button';
 
 const ViewProjectComponent = props => {
 
+    // useHistory simplifies client redirect
+
     let history = useHistory();
+
+    // If no username in redux, user is not logged in
 
     if (!props.userInfo.username) {
 
         history.push('/login');
+
         return null;
 
     }
+
+    // If no team username in redux, user does not have a team
 
     if (!props.userInfo.teamUsername) {
 
         history.push('/team-login');
+
         return null;
 
     }
+
+    // The name of the current project needs to be in redux store
+
+    // This keeps us from needing to use URL parameters
+
+    // So if the current project is null, push back to main projects page
 
     if (!props.currentProject) {
 
         history.push('/projects-admin-pm');
+
         return null;
 
     }
+
+    // Get project info from teamInfo in redux
 
     const projectInfo = props.teamInfo.projects.find(obj => 
         
@@ -35,15 +52,29 @@ const ViewProjectComponent = props => {
         
     );
 
+    // Get creator info to display
+
     const creatorInfo = props.teamInfo.members.find(obj => 
                         
         obj.username === projectInfo.creator
         
     );
 
+    // newTicket button is conditionally rendered
+
     let newTicket;
 
-    if (projectInfo.creator === props.userInfo.username) {
+    // Get user's member info
+
+    const memberObj = props.teamInfo.members.find(obj => 
+        
+        obj.username === props.userInfo.username
+        
+    );
+
+    // If the user is a PM or admin, render newTicket button
+
+    if (memberObj.role !== 'dev') {
 
         newTicket = (
 
@@ -71,6 +102,10 @@ const ViewProjectComponent = props => {
 
     }
 
+    // If user clicks on a ticket, dispatch to redux the name of the ticket
+
+    // so that it can be shown, then redirect user.
+
     const handleClick = ticketName => {
 
         props.currentTicketUpdate(ticketName);
@@ -90,14 +125,6 @@ const ViewProjectComponent = props => {
             <div className="main-page-parent">
 
                 <div>
-
-                    {/*
-                        
-                        Below is derived from react-bootstrap docs:
-                    
-                        https://mdbootstrap.com/docs/b5/react/components/cards/ 
-                        
-                    */}
 
                     <MDBCard >
 
@@ -136,9 +163,11 @@ const ViewProjectComponent = props => {
 
                     <h6>Teammates On Project:</h6>
 
-                    <div className="scrolling-list-small" style={{height: '100px'}}>
+                    <div className="scrolling-list-xs">
 
                         {
+
+                            // Iterate through assigned members, display their name/role
 
                             projectInfo.selectedMembers.map((username, index) => {
 
@@ -170,57 +199,70 @@ const ViewProjectComponent = props => {
 
                     <div>
 
-                    <h6>Tickets For This Project:</h6>
+                        <h6>Tickets For This Project:</h6>
 
-                    <div className="scrolling-list-small" style={{height: '120px'}}>
+                        <div className="scrolling-list-small" style={{height: '120px'}}>
+
+                            {
+
+                                // Iterate through tickets; if ticket's projectName 
+
+                                // property is equal to the current project's name,
+
+                                // it will be displayed in the list.
+
+                                props.teamInfo.tickets.map((obj, index) => {
+
+                                    if (obj.projectName === projectInfo.projectName) {
+
+                                        return (
+                                        
+                                            <div 
+
+                                                key={index}
+                                                onClick={() => handleClick(obj.ticketName)}
+                                                
+                                            >
+                                                {obj.ticketName}
+                                                
+                                            </div>
+                                            
+                                        );
+
+                                    } else {
+
+                                        return null;
+
+                                    }
+
+                                })
+
+                            }
+
+                        </div>
+
+                        <br />
 
                         {
 
-                            props.teamInfo.tickets.map((obj, index) => {
-
-                                if (obj.projectName === projectInfo.projectName) {
-
-                                    return (
-                                    
-                                        <div 
-
-                                            key={index}
-                                            onClick={() => handleClick(obj.ticketName)}
-                                            
-                                        >
-                                            {obj.ticketName}
-                                            
-                                        </div>
-                                        
-                                    );
-
-                                } else {
-
-                                    return null;
-
-                                }
-
-                            })
+                            newTicket // Conditionally rendered
 
                         }
 
+                        <br />
+
+                        <h6>Description:</h6>
+
+                        <div 
+                            
+                            style={{maxWidth: '300px', wordWrap: 'break-word'}}
+                            
+                        >
+                            {projectInfo.description}
+                            
+                        </div>
+
                     </div>
-
-                    <br />
-
-                    {
-
-                        newTicket
-
-                    }
-
-                    <br />
-
-                    <h6>Description:</h6>
-
-                    <div style={{maxWidth: '300px'}}>{projectInfo.description}</div>
-
-                </div>
                 
             </div>
 
@@ -229,6 +271,8 @@ const ViewProjectComponent = props => {
     );
 
 };
+
+// Connect the component to redux and export it
 
 const ViewProject = connect(mapCredentials, mapDispatch)(ViewProjectComponent);
 

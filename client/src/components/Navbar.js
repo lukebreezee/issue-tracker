@@ -10,6 +10,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 
+// The navbar has a different appearance when the screen width
+
+// is less than 700px. The following is the markup for > 700px
+
 const NavbarDefaultMarkup = (
 
     <nav>
@@ -63,6 +67,8 @@ const NavbarDefaultMarkup = (
     </nav>
 
 );
+
+// The markup for < 700px (dropdown instead of tabs)
 
 const NavbarPhoneMarkup = (
 
@@ -142,11 +148,23 @@ const NavbarPhoneMarkup = (
 
 );
 
+// Parent component
+
 const NavbarComponent = props => {
+
+    // State field is set based on screen width
 
     const [render, setRender] = useState(NavbarDefaultMarkup);
 
+    // Replicates componentDidMount
+
     useEffect(() => {
+
+        // If screen width is greater than 700, render the default
+
+        // markup declared earlier. Else, render phone markup (also
+
+        // declared earlier)
 
         if (window.innerWidth > 700) {
             
@@ -160,7 +178,13 @@ const NavbarComponent = props => {
 
     }, []);
 
+    // Listen for resize throughout the lifecycle of the component
+
     window.addEventListener('resize', () => {
+
+        // If screen width is greater than 700, render
+        
+        // default markup. Else, render the phone markup.
 
         if (window.innerWidth > 700) {
             
@@ -173,9 +197,14 @@ const NavbarComponent = props => {
         setRender(NavbarPhoneMarkup);
 
     });
+
+    // Return the state field
         
     return render;
-}
+
+};
+
+// Connect component to redux and export
 
 const Navbar = connect(mapCredentials, mapDispatch)(NavbarComponent);
 
