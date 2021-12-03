@@ -7,7 +7,7 @@ const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-require('./Config/dbConfig');
+const mongoose = require('mongoose');
 
 // Import User model from ./Models
 
@@ -60,6 +60,8 @@ app.use(cookieParser(process.env.SECRET));
 
 app.use(passport.session());
 
+exports.passport = passport;
+
 // Configuration and route imports
 
 require('./Config/passport-config')(passport, User);
@@ -76,6 +78,35 @@ require('./Routes/user');
 
 const port = process.env.PORT || 5000;
 
-// Starts our express server
+// Connecting mongoose to MongoDB using the
 
-app.listen(port);
+// environment variable below and then starting 
+
+// our server
+
+mongoose.connect(process.env.MONGO_URI, 
+
+    {   
+        
+        useNewUrlParser: true, 
+        useUnifiedTopology: true
+
+    }
+
+)
+
+.then(() => {
+
+    // If successful, start the server
+
+    app.listen(port);
+
+})
+
+.catch((err) => {
+
+    // If not, log to the console
+
+    console.log(err);
+    
+});

@@ -49,7 +49,7 @@ const ChangeEmailComponent = props => {
 
         //Query the database to change the email
 
-        axios.post('http://localhost:5000/update-user/email', {
+        axios.post('https://star-trak.herokuapp.com/update-user/email', {
 
             username: props.userInfo.username,
             newUsername,

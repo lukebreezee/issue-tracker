@@ -2,7 +2,7 @@ const app = require('../server').app;
 
 const helpers = require('../helpers');
 
-const passport = require('passport');
+const passport = require('../server').passport;
 
 const User = require('../Models/User');
 

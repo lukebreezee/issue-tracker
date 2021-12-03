@@ -97,7 +97,7 @@ const CreateProjectComponent = props => {
 
         // Post project to database
 
-        axios.post('http://localhost:5000/create-project', {
+        axios.post('https://star-trak.herokuapp.com/create-project', {
 
             teamUsername: props.userInfo.teamUsername,
             projectInfo: {

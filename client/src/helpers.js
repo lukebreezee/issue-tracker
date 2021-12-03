@@ -98,7 +98,7 @@ const getTeamInfo = () => {
 
         // Making a post request to the server
     
-        axios.post('http://localhost:5000/get-team-info', {
+        axios.post('https://star-trak.herokuapp.com/get-team-info', {
     
             teamUsername: store.getState().root.userInfo.teamUsername
     
@@ -136,7 +136,7 @@ const updateUser = (key, updateValue, username) => {
 
     // We make our request
 
-    axios.post('http://localhost:5000/update-user', {
+    axios.post('https://star-trak.herokuapp.com/update-user', {
 
         key,
         updateValue,
@@ -226,7 +226,7 @@ const sendNotification = params => {
 
     // Then we send our notification out to the selected users
 
-    axios.post('http://localhost:5000/send-notification', {
+    axios.post('https://star-trak.herokuapp.com/send-notification', {
 
         teamUsername: userInfo.teamUsername,
         memberList: params.memberList,

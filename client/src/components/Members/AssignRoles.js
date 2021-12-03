@@ -122,7 +122,7 @@ const AssignRolesComponent = props => {
 
         // Post to database to assign role to member
 
-        axios.post('http://localhost:5000/assign-role', {
+        axios.post('https://star-trak.herokuapp.com/assign-role', {
 
             teamUsername: props.userInfo.teamUsername,
             username: selectedMemberUsername,

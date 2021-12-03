@@ -31,7 +31,7 @@ const NotifsComponent = props => {
 
     // Fetch user info from server to update notif list
 
-    axios.get('http://localhost:5000/get-user-info', {
+    axios.get('https://star-trak.herokuapp.com/get-user-info', {
 
         headers: {
 

@@ -109,7 +109,7 @@ const ViewTicketComponent = props => {
 
         // Post comment to database
 
-        axios.post('http://localhost:5000/ticket-comment', {
+        axios.post('https://star-trak.herokuapp.com/ticket-comment', {
 
             comment: {
 
@@ -205,7 +205,7 @@ const ViewTicketComponent = props => {
 
         // Post the new status to the db
 
-        axios.post('http://localhost:5000/change-ticket-status', {
+        axios.post('https://star-trak.herokuapp.com/change-ticket-status', {
 
             teamUsername: props.userInfo.teamUsername,
             ticketName: ticketInfo.ticketName,

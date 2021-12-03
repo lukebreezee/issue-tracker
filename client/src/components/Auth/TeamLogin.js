@@ -47,7 +47,7 @@ const TeamLoginComponent = props => {
 
         // Query back-end to fetch team info
 
-        axios.post('http://localhost:5000/team-login', {
+        axios.post('https://star-trak.herokuapp.com/team-login', {
 
             teamUsername: username,
             password: password,
@@ -69,7 +69,7 @@ const TeamLoginComponent = props => {
 
                 // Update user info in database to assign the team username
 
-                axios.post('http://localhost:5000/update-user', {
+                axios.post('https://star-trak.herokuapp.com/update-user', {
 
                     key: 'teamUsername',
                     updateValue: username,

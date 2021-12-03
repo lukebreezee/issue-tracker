@@ -55,7 +55,7 @@ const ChangePasswordComponent = props => {
 
         //Query the database to update the password
 
-        axios.post('http://localhost:5000/update-user/password', {
+        axios.post('https://star-trak.herokuapp.com/update-user/password', {
 
             username: props.userInfo.username,
             currentPassword,

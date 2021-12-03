@@ -53,7 +53,7 @@ const GithubLoginComponent = props => {
 
             // Fetch user info now that we have the GitHub username
         
-            axios.post('http://localhost:5000/github-client-login', {
+            axios.post('https://star-trak.herokuapp.com/github-client-login', {
         
                 githubUsername
         

@@ -82,7 +82,7 @@ const GithubRegisterComponent = props => {
 
         // Query backend to register user
 
-        axios.post('http://localhost:5000/oauth-client-register', {
+        axios.post('https://star-trak.herokuapp.com/oauth-client-register', {
 
             credentials: {
                 

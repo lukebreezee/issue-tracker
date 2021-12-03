@@ -87,7 +87,7 @@ const CreateTeamComponent = props => {
 
         alert.innerHTML = 'Loading...';
 
-        axios.post('http://localhost:5000/create-team', {
+        axios.post('https://star-trak.herokuapp.com/create-team', {
 
             teamName: teamName,
             username: username,

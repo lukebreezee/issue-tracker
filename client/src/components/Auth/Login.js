@@ -39,7 +39,7 @@ const LoginComponent = props => {
 
         // Query back-end with googleId from response to log in
 
-        axios.post('http://localhost:5000/google-client-login', {
+        axios.post('https://star-trak.herokuapp.com/google-client-login', {
 
             googleId: response.profileObj.googleId
 
@@ -129,7 +129,7 @@ const LoginComponent = props => {
 
         // Query the database to authenticate user
 
-        axios.post('http://localhost:5000/login', {
+        axios.post('https://star-trak.herokuapp.com/login', {
 
             username,
             password

@@ -39,7 +39,7 @@ const AccountComponent = props => {
 
         if (props.teamInfo.username === 'demo-team') {
 
-            axios.delete('http://localhost:5000/demo-delete');
+            axios.delete('https://star-trak.herokuapp.com/demo-delete');
 
         }
 
@@ -63,7 +63,7 @@ const AccountComponent = props => {
 
         // Deleting user's member object from their team
 
-        await axios.post('http://localhost:5000/delete-member', {
+        await axios.post('https://star-trak.herokuapp.com/delete-member', {
 
             teamUsername: props.userInfo.teamUsername,
             username: props.userInfo.username
@@ -72,7 +72,7 @@ const AccountComponent = props => {
 
         // Making the user's team value null so that they can join a new team
 
-        axios.post('http://localhost:5000/update-user', {
+        axios.post('https://star-trak.herokuapp.com/update-user', {
 
             username: props.userInfo.username,
             key: 'teamUsername',
@@ -116,7 +116,7 @@ const AccountComponent = props => {
 
         // Make post request to back-end to update first/last name of user
 
-        axios.post('http://localhost:5000/update-user/names', {
+        axios.post('https://star-trak.herokuapp.com/update-user/names', {
 
             username: props.userInfo.username,
             teamUsername: props.userInfo.teamUsername,

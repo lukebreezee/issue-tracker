@@ -18,7 +18,7 @@ const DemoUserSelectComponent = props => {
 
         // Fetch demo data from the server
 
-        axios.get('http://localhost:5000/demo', {
+        axios.get('https://star-trak.herokuapp.com/demo', {
 
             headers: {
 

@@ -65,7 +65,7 @@ const GoogleRegisterComponent = props => {
 
         // Query the database to register user
 
-        axios.post('http://localhost:5000/oauth-client-register', {credentials})
+        axios.post('https://star-trak.herokuapp.com/oauth-client-register', {credentials})
 
         .then(res => {
 

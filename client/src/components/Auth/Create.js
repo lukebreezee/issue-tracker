@@ -82,7 +82,7 @@ const CreateComponent = props => {
 
             //Query the database to register user
 
-            axios.post('http://localhost:5000/register', accountInfo)
+            axios.post('https://star-trak.herokuapp.com/register', accountInfo)
 
             .then(res => {
 

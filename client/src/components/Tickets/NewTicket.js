@@ -184,7 +184,7 @@ const NewTicketComponent = props => {
 
         // Post the ticket info to the db
 
-        axios.post('http://localhost:5000/new-ticket', {
+        axios.post('https://star-trak.herokuapp.com/new-ticket', {
 
             ticketInfo: {
 
