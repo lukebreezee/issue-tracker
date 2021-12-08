@@ -213,7 +213,7 @@ app.get('/login/github', (req, res) => {
 
                     return res.redirect(
 
-                        `http://localhost:3000/register/github/${githubAccessToken}`
+                        `https://star-trak.netlify.app/github-register?accessToken=${githubAccessToken}`
 
                     );
 
@@ -225,7 +225,7 @@ app.get('/login/github', (req, res) => {
 
                     return res.redirect(
                         
-                        `http://localhost:3000/login/github/${githubAccessToken}`
+                        `https://star-trak.netlify.app/github-login?accessToken=${githubAccessToken}`
                         
                     );
 

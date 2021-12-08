@@ -1,15 +1,21 @@
-import { Route, useParams, useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Octokit } from '@octokit/core';
 import { connect } from 'react-redux';
-import { mapDispatch } from '../../redux/mapToProps';
+import { mapCredentials, mapDispatch } from '../../redux/mapToProps';
 import axios from 'axios';
 import { useEffect } from 'react';
 
 const GithubLoginComponent = props => {
 
-    // Use params lets us use URL parameters
+    // Use location lets us get the query string from the URL
 
-    const { accessToken } = useParams();
+    const { search } = useLocation();
+
+    // Get the access token from the query string
+
+    const urlParams = new URLSearchParams(search);
+
+    const accessToken = urlParams.get('accessToken');
 
     // Use history allows us to redirect the user
 
@@ -38,6 +44,8 @@ const GithubLoginComponent = props => {
                 // If falsy, something went wrong, redirect to login
         
                 if (!res.data.login) {
+
+                    console.log('No login');
                     
                     history.push('/login');
         
@@ -90,28 +98,20 @@ const GithubLoginComponent = props => {
 
     // This component does not return JSX, we just need it for the URL params
 
-    return null;
+    return (
+    
+        <div className="main-page-parent">
+            
+            <div>Github Login</div>
+            
+        </div>
+        
+    );
 
 };
 
 // Connect the above component to redux
 
-const GithubLoginConnected = connect(null, mapDispatch)(GithubLoginComponent);
-
-// Parent component handles the URL params and is the one that is exported
-
-const GithubLogin = () => {
-
-    return (
-
-        <Route path="/login/github/:accessToken">
-
-            <GithubLoginConnected />
-
-        </Route>
-
-    );
-
-};
+const GithubLogin = connect(mapCredentials, mapDispatch)(GithubLoginComponent);
 
 export { GithubLogin };

@@ -106,7 +106,7 @@ const LoginComponent = props => {
 
     // If google response was a failure, there was an error
 
-    const googleResponseFailure = () => {
+    const googleResponseFailure = response => {
 
         document.getElementById('login-status')
         .innerHTML = 'An unexpected error has occured';
@@ -186,55 +186,53 @@ const LoginComponent = props => {
 
         <div className="main-page-parent">
 
-            <div className="login-form">
+            <div className="auth-form">
 
                 <div className="aligned">Welcome, Please Log In</div>
 
                 <div id="login-status" className="aligned alert" />
 
-                <br />
+                <GoogleLogin 
+                    
+                    clientId="301612113265-5drj9s0i1l2u7tufef65d6e80a6j8pbh.apps.googleusercontent.com"
+                    buttonText="Continue With Google"
+                    id="google-button"
+                    onSuccess={res => googleResponseSuccess(res)}
+                    onFailure={res => googleResponseFailure(res)}
+                    cookiePolicy={'single_host_origin'}
+
+                />
+
+                <div 
+
+                    className="lbtn lbtn-github" 
+                    id="github-button"
+                    onClick={() => window.location.replace(
+                        
+                        'https://github.com/login/oauth/authorize?client_id=a02180673c2e4b33c2f6'
+
+                        // ^ Redirect to GitHub's login page
+                        
+                    )}
+
+                >
+
+                    <i className="logo"></i>
+
+                    <p className="label">
+
+                        Continue With GitHub
+
+                    </p>
+
+                </div>
 
                 <form className="login-fields" onSubmit={e => handleSubmit(e)} >
-
-                    <div 
-
-                        className="lbtn lbtn-github" 
-                        id="github-button"
-                        onClick={() => window.location.replace(
-                            
-                            'https://github.com/login/oauth/authorize?client_id=a02180673c2e4b33c2f6'
-
-                            // ^ Redirect to GitHub's login page
-                            
-                        )}
-
-                    >
-
-                        <i className="logo"></i>
-
-                        <p className="label">
-
-                            Continue With GitHub
-
-                        </p>
-
-                    </div>
-
-                    <GoogleLogin 
-                    
-                        clientId="301612113265-5drj9s0i1l2u7tufef65d6e80a6j8pbh.apps.googleusercontent.com"
-                        buttonText="Continue With Google"
-                        id="google-button"
-                        onSuccess={res => googleResponseSuccess(res)}
-                        onFailure={() => googleResponseFailure()}
-                        cookiePolicy={'single_host_origin'}
-
-                    />
 
                     <input 
 
                         type="text" 
-                        name="username" 
+                        name="username"
                         onChange={e => setUsername(e.target.value)} 
                         placeholder="Email" 
                         spellCheck="false"
@@ -244,7 +242,7 @@ const LoginComponent = props => {
                     <input 
 
                         type="password" 
-                        name="password" 
+                        name="password"
                         onChange={e => setPassword(e.target.value)} 
                         placeholder="Password" 
                         

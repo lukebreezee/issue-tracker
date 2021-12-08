@@ -392,6 +392,173 @@ app.post('/update-user/password', (req, res) => {
 
 });
 
+// This route updates a user's email without requiring a password. This is 
+
+// needed for oauth users since they do not have passwords.
+
+app.post('/oauth-email-change', (req, res) => {
+
+    User.findOne({ username: req.body.username }, (err, user) => {
+
+        if (err || !user) return res.send(errorMessage);
+
+        if (req.body.username === req.body.newUsername) return res.send({
+
+            message: 'New username cannot be the same as your current username'
+
+        });
+
+        // If password is correct, we update the username
+
+        user.username = req.body.newUsername;
+
+        // And we mark the field as modified
+
+        user.markModified('username');
+
+        // Then we save the user to the db
+
+        user.save((err, savedUser) => {
+
+            // Error handling
+
+            if (err || !savedUser) {
+                
+                return res.send(errorMessage);
+            
+            }
+
+            // Find the user's team because it stores the user's username
+
+            // in multiple places (members, tickets, projects)
+
+            Team.findOne({ username: savedUser.teamUsername }, (err, team) => {
+
+                // Error handling
+
+                if (err || !team) {
+                    
+                    return res.send(errorMessage);
+                
+                }
+
+                // Create copy of member list
+
+                const members = [...team.members];
+
+                // Find user's index in member list
+
+                const memberIndex = members.findIndex(obj =>
+                    
+                    obj.username === req.body.username
+                    
+                );
+
+                // Update specific member object to the new username
+
+                members[memberIndex].username = savedUser.username;
+
+                // Assign the copy list to the actual list
+
+                team.members = [...members];
+
+                // Tickets have member lists that contain usernames and
+
+                // the creator of the ticket is documented by username as well,
+
+                // so we must iterate through the team's tickets and replace usernames
+
+                // of creators and assigned members.
+
+                team.tickets = team.tickets.map(obj => {
+
+                    if (obj.creator === req.body.username) {
+
+                        obj.creator = savedUser.username;
+
+                    }
+
+                    obj.ticketMembers = obj.ticketMembers.map(username => {
+
+                        if (username === req.body.username) {
+
+                            username = savedUser.username;
+
+                        }
+
+                        return username;
+
+                    });
+
+                    return obj;
+
+                });
+
+                // Same procedure goes for projects as described with tickets
+
+                // above
+
+                team.projects = team.projects.map(obj => {
+
+                    if (obj.creator === req.body.username) {
+
+                        obj.creator = savedUser.username;
+
+                    }
+
+                    obj.selectedMembers = obj.selectedMembers.map(username => {
+
+                        if (username === req.body.username) {
+
+                            username = savedUser.username;
+
+                        }
+
+                        return username;
+
+                    });
+
+                    return obj;
+
+                });
+
+                // Mark the following fields as modified
+
+                team.markModified('members');
+
+                team.markModified('tickets');
+
+                team.markModified('projects');
+
+                // And then save the team
+
+                team.save((err, team) => {
+
+                    // Error handling
+
+                    if (err || !team) return res.send(errorMessage);
+
+                    // If no error, send back the user info and the team info
+
+                    // to be saved in redux
+
+                    return res.send({
+
+                        teamInfo: team,
+                        userInfo: savedUser
+
+                    });
+
+                });
+
+            });
+
+        });
+
+    });
+
+});
+
 // Pushes a notification to a list of users
 
 app.post('/send-notification', (req, res) => {

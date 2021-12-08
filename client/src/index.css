@@ -10,6 +10,14 @@
   flex-direction: column;
 }
 
+.auth-form {
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
 .login-link {
   width: 100px;
   margin-top: 10px;
@@ -18,7 +26,6 @@
 .login-fields {
   display: flex;
   flex-direction: column;
-  max-width: fit-content;
   gap: 10px;
 }
 
@@ -464,6 +471,7 @@ nav > ul {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  max-width: fit-content;
 
 }
 

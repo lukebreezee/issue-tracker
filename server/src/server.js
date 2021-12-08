@@ -27,10 +27,20 @@ exports.app = app;
 
 app.use(cors({
 
-    origin: 'http://localhost:3000',
+    origin: 'https://star-trak.netlify.app',
     credentials: true
 
 }));
+
+// Enable all request methods
+
+app.use((req, res, next) => {
+
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+
+    next();
+
+});
 
 // Allow json data and URL encoded data
 

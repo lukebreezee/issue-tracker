@@ -47,7 +47,9 @@ const NotifsComponent = props => {
 
         if (res.message) return;
 
-        // If no error, load user data
+        // If no error and different notif count, load user data
+
+        if (res.data.notifications.length === props.userInfo.notifications.length) return;
 
         props.userLogIn(res.data);
 

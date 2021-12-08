@@ -71,7 +71,7 @@ const AppComponent = props => {
       
       !props.userInfo.username
 
-      && /\/register|\/login\/github|\/demo-user-select/.test(location.pathname) === false
+      && /register|\/github-login|\/demo-user-select/.test(location.pathname) === false
 
     ) {
   
@@ -89,7 +89,7 @@ const AppComponent = props => {
 
         && location.pathname !== '/create-team'
 
-        && /\/register|\/login|\/demo-user-select/.test(location.pathname) === false
+        && /register|\/github-login|\/login|\/demo-user-select/.test(location.pathname) === false
 
       ) {
   
@@ -143,7 +143,7 @@ const AppComponent = props => {
 
         // Else, we use this formula to calculate page height
 
-        const pageHeight = ((notifCount - 5) * 12 + 100).toString();
+        const pageHeight = ((notifCount - 5) * 13 + 100).toString();
 
         // And assign the parent height to the above var in vh (viewport height)
 
@@ -206,7 +206,13 @@ const AppComponent = props => {
 
 useEffect(() => {
 
-    getTeamInfo();
+    getTeamInfo()
+    
+    .catch(() => {
+
+      return;
+
+    });
 
 }, [location.pathname]);
 
@@ -223,7 +229,7 @@ useEffect(() => {
 
               <Route path="/" component={Dashboard} exact />
 
-              <Route path="/register" component={Create} exact/>
+              <Route path="/register" component={Create} exact />
 
               <Route path="/login" component={Login} exact />
 
@@ -255,9 +261,9 @@ useEffect(() => {
 
               <Route path="/view-ticket" component={ViewTicket} />
 
-              <Route path="/register/github" component={GithubRegister} />
+              <Route path="/github-register" component={GithubRegister} />
 
-              <Route path="/login/github" component={GithubLogin} />
+              <Route path="/github-login" component={GithubLogin} />
 
               <Route path="/register/google" component={GoogleRegister} />
 
